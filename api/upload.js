@@ -1,8 +1,7 @@
 const CATBOX_API = "https://catbox.moe/user/api.php";
-
 const MAX_FILE_SIZE = 4 * 1024 * 1024;
 
-function resposta(data, status = 200) {
+function json(data, status = 200) {
     return Response.json(data, {
         status,
         headers: {
@@ -11,69 +10,150 @@ function resposta(data, status = 200) {
     });
 }
 
-// Teste da API
 export async function GET() {
-    return resposta({
+    return json({
         success: true,
-        message: "FileForge API funcionando",
-        endpoint: "/api/upload",
-        method: "POST"
+        message: "FileForge API funcionando"
     });
 }
 
-// Upload
+async function enviarCatbox(file, userhash) {
+
+    const buffer = await file.arrayBuffer();
+
+    const blob = new Blob(
+        [buffer],
+        {
+            type:
+                file.type ||
+                "application/octet-stream"
+        }
+    );
+
+    const form = new FormData();
+
+    form.append(
+        "reqtype",
+        "fileupload"
+    );
+
+    if (userhash) {
+        form.append(
+            "userhash",
+            userhash
+        );
+    }
+
+    form.append(
+        "fileToUpload",
+        blob,
+        file.name || "arquivo.bin"
+    );
+
+    const response = await fetch(
+        CATBOX_API,
+        {
+            method: "POST",
+            headers: {
+                "User-Agent":
+                    "Mozilla/5.0 FileForge"
+            },
+            body: form
+        }
+    );
+
+    const text =
+        (await response.text()).trim();
+
+    return {
+        status: response.status,
+        text
+    };
+}
+
+async function enviarLitterbox(file) {
+
+    const buffer = await file.arrayBuffer();
+
+    const blob = new Blob(
+        [buffer],
+        {
+            type:
+                file.type ||
+                "application/octet-stream"
+        }
+    );
+
+    const form = new FormData();
+
+    form.append(
+        "reqtype",
+        "fileupload"
+    );
+
+    form.append(
+        "time",
+        "72h"
+    );
+
+    form.append(
+        "fileToUpload",
+        blob,
+        file.name || "arquivo.bin"
+    );
+
+    const response = await fetch(
+        CATBOX_API,
+        {
+            method: "POST",
+            headers: {
+                "User-Agent":
+                    "Mozilla/5.0 FileForge"
+            },
+            body: form
+        }
+    );
+
+    const text =
+        (await response.text()).trim();
+
+    return {
+        status: response.status,
+        text
+    };
+}
+
 export async function POST(request) {
 
     try {
 
-        const contentType =
-            request.headers.get("content-type") || "";
-
-        if (
-            !contentType
-                .toLowerCase()
-                .includes("multipart/form-data")
-        ) {
-
-            return resposta({
-                success: false,
-                error:
-                    "A requisição precisa ser multipart/form-data."
-            }, 400);
-
-        }
-
-        const formData =
+        const form =
             await request.formData();
 
         const file =
-            formData.get("file");
+            form.get("file");
 
         const userhash =
             String(
-                formData.get("userhash") || ""
+                form.get("userhash") || ""
             ).trim();
 
-        // Verifica arquivo
         if (
             !file ||
             typeof file.arrayBuffer !== "function"
         ) {
 
-            return resposta({
+            return json({
                 success: false,
                 error:
-                    "Nenhum arquivo foi recebido."
+                    "Nenhum arquivo recebido."
             }, 400);
 
         }
 
-        // Verifica tamanho
-        if (
-            file.size <= 0
-        ) {
+        if (file.size <= 0) {
 
-            return resposta({
+            return json({
                 success: false,
                 error:
                     "O arquivo está vazio."
@@ -82,173 +162,115 @@ export async function POST(request) {
         }
 
         if (
-            file.size > MAX_FILE_SIZE
+            file.size >
+            MAX_FILE_SIZE
         ) {
 
-            return resposta({
+            return json({
                 success: false,
                 error:
-                    "O arquivo é maior que 4 MB."
+                    "O arquivo ultrapassa 4 MB."
             }, 413);
 
         }
 
         /*
-         * Converte o arquivo recebido
-         * para um Blob novo.
+         * PRIMEIRA TENTATIVA:
+         * Catbox permanente
          */
-        const arquivoBuffer =
-            await file.arrayBuffer();
 
-        const arquivoBlob =
-            new Blob(
-                [arquivoBuffer],
-                {
-                    type:
-                        file.type ||
-                        "application/octet-stream"
-                }
-            );
-
-        /*
-         * Monta a requisição para o Catbox.
-         */
-        const catboxForm =
-            new FormData();
-
-        catboxForm.append(
-            "reqtype",
-            "fileupload"
-        );
-
-        if (userhash) {
-
-            catboxForm.append(
-                "userhash",
+        const catbox =
+            await enviarCatbox(
+                file,
                 userhash
             );
 
-        }
+        const catboxURL =
+            catbox.text;
 
-        catboxForm.append(
-            "fileToUpload",
-            arquivoBlob,
-            file.name ||
-            "arquivo.bin"
-        );
-
-        /*
-         * Envia para o Catbox.
-         */
-        const catboxResponse =
-            await fetch(
-                CATBOX_API,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "User-Agent":
-                            "FileForge/1.0"
-                    },
-
-                    body:
-                        catboxForm
-                }
-            );
-
-        const catboxText =
-            (
-                await catboxResponse.text()
-            ).trim();
-
-        /*
-         * Se Catbox devolver erro,
-         * mostra a resposta real.
-         */
-        if (!catboxResponse.ok) {
-
-            console.error(
-                "CATBOX STATUS:",
-                catboxResponse.status
-            );
-
-            console.error(
-                "CATBOX RESPONSE:",
-                catboxText
-            );
-
-            return resposta({
-
-                success: false,
-
-                error:
-                    "Catbox respondeu HTTP " +
-                    catboxResponse.status,
-
-                catbox_response:
-                    catboxText ||
-                    "Catbox não enviou detalhes.",
-
-                status:
-                    catboxResponse.status
-
-            }, 502);
-
-        }
-
-        /*
-         * Verifica o link.
-         */
-        const linkValido =
+        const linkCatbox =
             /^https:\/\/(?:files|litter)\.catbox\.moe\/[A-Za-z0-9._-]+$/;
 
         if (
-            !linkValido.test(
-                catboxText
-            )
+            catbox.status === 200 &&
+            linkCatbox.test(catboxURL)
         ) {
 
-            return resposta({
-
-                success: false,
-
-                error:
-                    "O Catbox não retornou um link válido.",
-
-                catbox_response:
-                    catboxText
-
-            }, 502);
+            return json({
+                success: true,
+                url: catboxURL,
+                provider: "Catbox.moe",
+                permanent: true,
+                filename:
+                    file.name
+            });
 
         }
 
         /*
-         * SUCESSO
+         * SEGUNDA TENTATIVA:
+         * Litterbox
          */
-        return resposta({
 
-            success: true,
+        const litter =
+            await enviarLitterbox(file);
 
-            url:
-                catboxText,
+        const litterURL =
+            litter.text;
 
-            provider:
-                "Catbox.moe",
+        if (
+            litter.status === 200 &&
+            linkCatbox.test(litterURL)
+        ) {
 
-            filename:
-                file.name ||
-                "arquivo.bin"
+            return json({
+                success: true,
+                url: litterURL,
+                provider: "Litterbox",
+                permanent: false,
+                expires: "72h",
+                filename:
+                    file.name,
+                warning:
+                    "O Catbox permanente recusou o upload. Foi usado Litterbox por 72 horas."
+            });
 
-        }, 200);
+        }
+
+        /*
+         * Falhar somente depois
+         * das duas tentativas.
+         */
+
+        return json({
+
+            success: false,
+
+            error:
+                "Não foi possível enviar o arquivo.",
+
+            catbox_status:
+                catbox.status,
+
+            catbox_response:
+                catbox.text,
+
+            litterbox_status:
+                litter.status,
+
+            litterbox_response:
+                litter.text
+
+        }, 502);
 
     } catch (error) {
 
         console.error(
-            "FILEFORGE ERROR:",
+            "FileForge:",
             error
         );
 
-        return resposta({
+        return json({
 
             success: false,
 
@@ -259,5 +281,4 @@ export async function POST(request) {
         }, 500);
 
     }
-
 }
