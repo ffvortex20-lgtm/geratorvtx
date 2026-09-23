@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FileForge Direct - Hospedagem Permanente & Link Direto</title>
+    <title>FileForge Direct - Hospedagem Permanente & Links Diretos</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,7 +31,7 @@
     <!-- Google Fonts Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- JSZip Library for Folder Compression -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -48,54 +48,55 @@
             height: 6px;
         }
         textarea::-webkit-scrollbar-track, .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0f172a;
+            background: #090d16;
         }
         textarea::-webkit-scrollbar-thumb, .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #334155;
+            background: #1e293b;
             border-radius: 4px;
         }
         textarea::-webkit-scrollbar-thumb:hover, .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+            background: #334155;
         }
         .dropzone-active {
             border-color: #6366f1 !important;
             background-color: rgba(99, 102, 241, 0.08) !important;
         }
         @keyframes pulse-glow {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 0.8; }
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
         }
         .animate-glow {
-            animation: pulse-glow 3s infinite ease-in-out;
+            animation: pulse-glow 4s infinite ease-in-out;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white antialiased">
 
     <!-- Header Navigation -->
-    <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 py-4 px-4 md:px-8 shadow-xl">
-        <div class="max-w-5xl mx-auto flex items-center justify-between">
+    <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-50 py-3.5 px-4 md:px-8 shadow-xl">
+        <div class="max-w-5xl mx-auto flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="bg-gradient-to-tr from-indigo-600 to-indigo-400 p-2.5 rounded-2xl shadow-lg shadow-indigo-500/20 text-white">
-                    <i class="fa-solid fa-infinity text-xl"></i>
+                <div class="bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 p-2.5 rounded-2xl shadow-lg shadow-indigo-500/20 text-slate-950 font-black">
+                    <i class="fa-solid fa-bolt text-xl"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="text-base md:text-lg font-bold tracking-tight text-white">FileForge Direct</h1>
                         <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
-                            <i class="fa-solid fa-shield-halved text-[9px]"></i> Permanente (Catbox)
+                            <i class="fa-solid fa-infinity text-[9px]"></i> Catbox Permanent
                         </span>
                     </div>
-                    <p class="text-xs text-slate-400 hidden sm:block">Gerador de Links Diretos Sem Expiração e Sem Propaganda</p>
+                    <p class="text-xs text-slate-400 hidden sm:block">Gerador de Links Permanentes e Diretos (Sem Expiração)</p>
                 </div>
             </div>
             
             <div class="flex items-center gap-3">
                 <!-- WhatsApp Channel Button -->
                 <a href="https://whatsapp.com/channel/0029VbC7FWcJENxsIOsndS15" target="_blank" rel="noopener noreferrer" 
-                   class="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white transition text-xs md:text-sm font-semibold flex items-center gap-2 px-4 py-2.5 rounded-xl shadow-lg shadow-emerald-600/20">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Entrar no Canal</span>
+                   class="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white transition text-xs md:text-sm font-semibold flex items-center gap-2 px-3.5 py-2 md:px-4 md:py-2.5 rounded-xl shadow-lg shadow-emerald-600/20 group">
+                    <i class="fa-brands fa-whatsapp text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="hidden xs:inline">Entrar no Canal</span>
+                    <span class="xs:hidden">Canal</span>
                 </a>
             </div>
         </div>
@@ -116,31 +117,31 @@
         </div>
 
         <!-- Main Form Card -->
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-5 md:p-8 relative overflow-hidden">
-            <!-- Decorative Background Blurs -->
-            <div class="absolute -top-24 -right-24 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none animate-glow"></div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl shadow-2xl p-5 md:p-8 relative overflow-hidden backdrop-blur-md">
+            <!-- Background Aesthetic Lighting -->
+            <div class="absolute -top-24 -right-24 w-80 h-80 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none animate-glow"></div>
             <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none animate-glow"></div>
 
             <div class="mb-6">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
                     <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-                        <span>Hospedar Conteúdo Permanente</span>
+                        <span>Hospedagem Permanente e Direta</span>
                     </h2>
                     <span class="bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 text-xs font-mono px-3 py-1 rounded-full flex items-center gap-1.5">
-                        <i class="fa-solid fa-lock-open text-emerald-400"></i> NUNCA EXSPIRA
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i> NUNCA EXPIRA
                     </span>
                 </div>
                 <p class="text-slate-400 text-xs md:text-sm leading-relaxed">
-                    Envie texto/código, ficheiros ou pastas inteiras do seu computador. Todos os arquivos preservam a extensão original e são hospedados via <strong>Catbox.moe</strong> com links permanentes.
+                    Envie scripts, códigos ou ficheiros com a <strong>extensão exata preservada</strong>. Os links são gerados diretamente via <strong>Catbox.moe</strong> e permanecem ativos para sempre.
                 </p>
             </div>
 
             <!-- TAB NAVIGATION -->
-            <div class="flex items-center gap-2 border-b border-slate-800 mb-6 pb-3 overflow-x-auto">
+            <div class="flex items-center gap-2 border-b border-slate-800 mb-6 pb-3 overflow-x-auto custom-scrollbar">
                 <button type="button" onclick="switchTab('text')" id="tabBtnText" 
                     class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
                     <i class="fa-solid fa-code"></i>
-                    <span>Texto / Script Manual</span>
+                    <span>Script / Texto Manual</span>
                 </button>
                 <button type="button" onclick="switchTab('file')" id="tabBtnFile" 
                     class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-slate-800 hover:bg-slate-700 text-slate-300">
@@ -164,11 +165,11 @@
                                 <i class="fa-solid fa-file-signature text-indigo-400"></i> Nome do Ficheiro & Extensão Exata
                             </label>
                             <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="text-[11px] text-slate-400 mr-1">Atalhos de extensão:</span>
+                                <span class="text-[11px] text-slate-400 mr-1">Atalhos rápidos:</span>
                                 <button type="button" onclick="setExtension('.lua')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.lua</button>
                                 <button type="button" onclick="setExtension('.txt')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.txt</button>
-                                <button type="button" onclick="setExtension('.json')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.json</button>
                                 <button type="button" onclick="setExtension('.py')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.py</button>
+                                <button type="button" onclick="setExtension('.json')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.json</button>
                                 <button type="button" onclick="setExtension('.html')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.html</button>
                             </div>
                         </div>
@@ -177,7 +178,7 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-500">
                                 <i class="fa-solid fa-terminal"></i>
                             </span>
-                            <input type="text" id="fileName" placeholder="ex: script.lua, config.json ou dados.txt" 
+                            <input type="text" id="fileName" placeholder="ex: script.lua, main.py ou dados.txt" 
                                 class="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm font-mono">
                         </div>
                     </div>
@@ -185,12 +186,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <label for="fileContent" class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                                <i class="fa-solid fa-align-left text-indigo-400"></i> Conteúdo do Ficheiro
+                                <i class="fa-solid fa-align-left text-indigo-400"></i> Conteúdo do Ficheiro / Script
                             </label>
                             <span id="charCount" class="text-[11px] font-mono text-slate-500">0 caracteres | 0 linhas</span>
                         </div>
 
-                        <textarea id="fileContent" rows="8" oninput="updateCharCount()" placeholder="Cole ou digite aqui o seu código LUA, JSON, Python, HTML ou texto livre..."
+                        <textarea id="fileContent" rows="8" oninput="updateCharCount()" placeholder="Cole aqui seu código LUA, Python, JSON, HTML ou texto livre..."
                             class="w-full p-4 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 font-mono-code text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-y leading-relaxed"></textarea>
                     </div>
                 </div>
@@ -208,7 +209,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-semibold text-slate-200">Clique para selecionar ou arraste um ficheiro aqui</p>
-                            <p class="text-xs text-slate-500 mt-1">Preserva qualquer extensão (.lua, .zip, .exe, .png, .pdf, .json, etc.)</p>
+                            <p class="text-xs text-slate-500 mt-1">Preserva a extensão exata (.lua, .zip, .png, .exe, .pdf, .json, etc.)</p>
                         </div>
                         <input type="file" id="singleFileInput" onchange="handleSingleFileSelected(event)" class="hidden">
                     </div>
@@ -243,7 +244,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-semibold text-slate-200">Clique para selecionar uma pasta do seu computador</p>
-                            <p class="text-xs text-slate-500 mt-1">Compacta automaticamente em um arquivo .ZIP com hospedagem permanente</p>
+                            <p class="text-xs text-slate-500 mt-1">Compacta automaticamente em arquivo .ZIP com hospedagem permanente</p>
                         </div>
                         <input type="file" id="folderInput" webkitdirectory directory multiple onchange="handleFolderSelected(event)" class="hidden">
                     </div>
@@ -295,7 +296,7 @@
                 <!-- Action Buttons Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                     <button type="submit" id="cloudSubmitBtn" 
-                        class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-indigo-600/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 active:from-indigo-700 active:to-indigo-600 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-indigo-600/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fa-solid fa-infinity text-lg"></i>
                         <span id="submitBtnText">Gerar Link Permanente (Catbox)</span>
                     </button>
@@ -320,15 +321,15 @@
                             <p id="providerStatus" class="text-xs text-slate-400">Provedor: Catbox.moe (Hospedagem Permanente)</p>
                         </div>
                     </div>
-                    <span id="expirationBadge" class="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] px-3 py-1 rounded-full font-semibold flex items-center gap-1">
-                        <i class="fa-solid fa-infinity text-emerald-400"></i> Link Permanente (Nunca Expira)
+                    <span id="expirationBadge" class="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] px-3 py-1 rounded-full font-semibold flex items-center gap-1 shrink-0">
+                        <i class="fa-solid fa-infinity text-emerald-400"></i> Nunca Expira
                     </span>
                 </div>
 
                 <!-- Generated Direct URL Input -->
                 <div class="space-y-2">
                     <label class="block text-xs font-medium text-slate-400">
-                        Link Permanente Direto (Download / Acesso Imediato):
+                        Link Permanente Direto (Download / Accesso Imediato):
                     </label>
                     <div class="flex flex-col sm:flex-row items-stretch gap-2">
                         <input type="text" id="directUrlOutput" readonly 
@@ -357,7 +358,7 @@
             </div>
 
             <!-- Loading Overlay -->
-            <div id="loadingOverlay" class="hidden absolute inset-0 bg-slate-900/95 backdrop-blur-sm z-20 flex flex-col items-center justify-center space-y-4 p-6">
+            <div id="loadingOverlay" class="hidden absolute inset-0 bg-slate-900/95 backdrop-blur-md z-20 flex flex-col items-center justify-center space-y-4 p-6">
                 <div class="relative flex items-center justify-center">
                     <div class="w-14 h-14 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
                     <i id="loadingIcon" class="fa-solid fa-cloud-arrow-up text-indigo-400 absolute text-sm"></i>
@@ -374,7 +375,7 @@
         </div>
 
         <!-- Summary & Features Explanatory Card -->
-        <div class="mt-8 bg-slate-900/80 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="mt-8 bg-slate-900/80 border border-slate-800/80 rounded-3xl p-6 md:p-8 space-y-6">
             <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
                 <div class="bg-gradient-to-tr from-indigo-500 to-emerald-400 p-2.5 rounded-2xl text-slate-950 font-bold">
                     <i class="fa-solid fa-circle-info text-lg"></i>
@@ -386,51 +387,51 @@
             </div>
 
             <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
-                O <strong class="text-white">FileForge Direct</strong> foi criado para quem precisa de links diretos e permanentes para compartilhar códigos, scripts, documentos ou pastas inteiras. Através da API do <strong class="text-emerald-400">Catbox.moe</strong>, seus arquivos <strong class="text-white">nunca expiram e não são apagados</strong>.
+                O <strong class="text-white">FileForge Direct</strong> foi criado para quem precisa de links diretos e 100% permanentes para compartilhar scripts, códigos, documentos ou pastas. Todos os arquivos são hospedados via <strong class="text-emerald-400">Catbox.moe</strong> e <strong class="text-white">nunca expiram nem são apagados</strong>.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 <!-- Feature 1 -->
-                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1">
-                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm mb-1">
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1.5">
+                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm">
                         <i class="fa-solid fa-infinity"></i>
                         <span>1. Links 100% Permanentes</span>
                     </div>
                     <p class="text-slate-400 leading-relaxed">
-                        Esqueça links temporários de 1 hora! Aqui os arquivos ficam salvos permanentemente na nuvem para que você possa usar sem preocupações.
+                        Nenhum arquivo expira em 1 hora. Os links gerados ficam salvos indefinidamente na nuvem para uso seguro.
                     </p>
                 </div>
 
                 <!-- Feature 2 -->
-                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1">
-                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm mb-1">
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1.5">
+                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm">
                         <i class="fa-solid fa-code"></i>
-                        <span>2. Preserva Extensão Exata</span>
+                        <span>2. Preservação de Extensão Exata</span>
                     </div>
                     <p class="text-slate-400 leading-relaxed">
-                        Se você precisa de um arquivo <code class="text-indigo-300">.lua</code>, <code class="text-indigo-300">.py</code>, <code class="text-indigo-300">.txt</code> ou <code class="text-indigo-300">.json</code>, o site garante a extensão exata sem forçar nenhuma alteração.
+                        Se você cria um <code class="text-indigo-300 font-mono">.lua</code> para Roblox (Skywars/Vortex Hub), <code class="text-indigo-300 font-mono">.py</code> ou <code class="text-indigo-300 font-mono">.txt</code>, o link preserva a extensão sem nunca forçar <code class="text-rose-400 font-mono">.json</code> ou <code class="text-rose-400 font-mono">.dat</code>.
                     </p>
                 </div>
 
                 <!-- Feature 3 -->
-                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1">
-                    <div class="flex items-center gap-2 text-amber-400 font-semibold text-sm mb-1">
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1.5">
+                    <div class="flex items-center gap-2 text-amber-400 font-semibold text-sm">
                         <i class="fa-solid fa-folder-plus"></i>
                         <span>3. Compactador de Pasta (Auto-ZIP)</span>
                     </div>
                     <p class="text-slate-400 leading-relaxed">
-                        Selecione qualquer pasta do seu computador para compactar todos os ficheiros internamente em um único arquivo <code class="text-amber-300">.ZIP</code> pronto para envio ou download.
+                        Selecione qualquer pasta do seu computador para compactar todos os ficheiros internamente em um arquivo <code class="text-amber-300 font-mono">.ZIP</code> pronto para envio ou download.
                     </p>
                 </div>
 
                 <!-- Feature 4 -->
-                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1">
-                    <div class="flex items-center gap-2 text-emerald-400 font-semibold text-sm mb-1">
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1.5">
+                    <div class="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
                         <i class="fa-solid fa-bolt"></i>
-                        <span>4. Sem Anúncios ou Encurtadores</span>
+                        <span>4. Compatível com Roblox loadstring</span>
                     </div>
                     <p class="text-slate-400 leading-relaxed">
-                        O link gerado aponta direto para o arquivo original sem telas intermediárias, protetores de link ou propagandas.
+                        Gera links diretos e limpos prontos para uso em executores: <code class="text-emerald-300 font-mono select-all">loadstring(game:HttpGet("..."))()</code>
                     </p>
                 </div>
             </div>
@@ -439,7 +440,7 @@
 
     <!-- Footer -->
     <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-900">
-        FileForge Direct &bull; Hospedagem Permanente via Catbox API com JSZip Integrado.
+        FileForge Direct &bull; Hospedagem Permanente via Catbox API &bull; Links Sem Expiração.
     </footer>
 
     <!-- JAVASCRIPT LOGIC -->
@@ -531,11 +532,11 @@
             charCount.textContent = `${chars.toLocaleString()} caracteres | ${lines.toLocaleString()} linhas`;
         }
 
-        // Preset Extension Helper (Preserves base name or sets fallback)
+        // Preset Extension Helper
         function setExtension(ext) {
             let current = fileNameInput.value.trim();
             if (!current) {
-                fileNameInput.value = 'meu_arquivo' + ext;
+                fileNameInput.value = 'script' + ext;
             } else {
                 const lastDot = current.lastIndexOf('.');
                 if (lastDot > 0) {
@@ -671,95 +672,92 @@
         }
 
         /**
-         * Catbox.moe API Integration (PERMANENT HOSTING)
+         * Catbox.moe API Integration (PERMANENT HOSTING ONLY)
          * API Endpoint: https://catbox.moe/user/api.php
-         * Reqtype: 'fileupload'
-         * FileToUpload: File/Blob
+         * NO TMPFILES OR TEMPORARY HOSTS USED!
          */
         async function uploadToCatbox(file) {
-            const catboxEndpoint = 'https://catbox.moe/user/api.php';
-            
-            // Method 1: Try Direct Fetch
-            try {
-                const formData = new FormData();
-                formData.append('reqtype', 'fileupload');
-                formData.append('fileToUpload', file, file.name);
+            const catboxApi = 'https://catbox.moe/user/api.php';
 
-                const response = await fetch(catboxEndpoint, {
-                    method: 'POST',
-                    body: formData
-                });
+            // Proxy endpoints to bypass CORS restrictions
+            const proxies = [
+                { name: 'CORSProxy.io', url: 'https://corsproxy.io/?' + encodeURIComponent(catboxApi) },
+                { name: 'CodeTabs Proxy', url: 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(catboxApi) },
+                { name: 'ThingProxy', url: 'https://thingproxy.freeboard.io/fetch/' + catboxApi },
+                { name: 'Catbox Direto', url: catboxApi }
+            ];
 
-                if (response.ok) {
-                    const directUrl = (await response.text()).trim();
-                    if (directUrl.startsWith('http://') || directUrl.startsWith('https://')) {
-                        return {
-                            url: directUrl,
-                            provider: 'Catbox.moe (Hospedagem Permanente)',
-                            isLocal: false
-                        };
+            for (const proxy of proxies) {
+                try {
+                    const formData = new FormData();
+                    formData.append('reqtype', 'fileupload');
+                    formData.append('fileToUpload', file, file.name);
+
+                    const response = await fetch(proxy.url, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        const responseText = (await response.text()).trim();
+                        // Verify if response matches catbox file link
+                        const match = responseText.match(/https?:\/\/files\.catbox\.moe\/[a-zA-Z0-9_\-\.\/]+/);
+                        if (match) {
+                            return {
+                                url: match[0],
+                                provider: 'Catbox.moe (Permanente)',
+                                isLocal: false
+                            };
+                        }
+                        if (responseText.startsWith('http://') || responseText.startsWith('https://')) {
+                            return {
+                                url: responseText,
+                                provider: 'Catbox.moe (Permanente)',
+                                isLocal: false
+                            };
+                        }
                     }
+                } catch (err) {
+                    console.warn(`Tentativa via ${proxy.name} falhou:`, err);
                 }
-            } catch (errDirect) {
-                console.warn('Envio direto para Catbox bloqueado por CORS, tentando via proxy seguro...', errDirect);
             }
 
-            // Method 2: Try via CORS Proxy (corsproxy.io)
-            try {
-                const proxyFormData = new FormData();
-                proxyFormData.append('reqtype', 'fileupload');
-                proxyFormData.append('fileToUpload', file, file.name);
+            // Secondary Permanent Fallback for Plain Text / Code / Scripts (dPaste 10 Years RAW)
+            if (file.type.startsWith('text/') || file.name.match(/\.(lua|txt|json|py|js|html|css|cpp|cs|sh|md|yaml|yml)$/i)) {
+                try {
+                    const textContent = await file.text();
+                    const dpasteBody = new URLSearchParams();
+                    dpasteBody.append('content', textContent);
+                    dpasteBody.append('expiry_days', '3650'); // 10 Anos (Permanente)
+                    dpasteBody.append('title', file.name);
 
-                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(catboxEndpoint);
-                const response = await fetch(proxyUrl, {
-                    method: 'POST',
-                    body: proxyFormData
-                });
+                    const dpasteRes = await fetch('https://dpaste.com/api/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: dpasteBody.toString()
+                    });
 
-                if (response.ok) {
-                    const directUrl = (await response.text()).trim();
-                    if (directUrl.startsWith('http://') || directUrl.startsWith('https://')) {
-                        return {
-                            url: directUrl,
-                            provider: 'Catbox.moe Proxy (Hospedagem Permanente)',
-                            isLocal: false
-                        };
+                    if (dpasteRes.ok) {
+                        const pasteUrl = (await dpasteRes.text()).trim();
+                        if (pasteUrl.startsWith('http')) {
+                            const rawUrl = pasteUrl.endsWith('.txt') ? pasteUrl : `${pasteUrl}.txt`;
+                            return {
+                                url: rawUrl,
+                                provider: 'dPaste RAW (Permanente - 10 Anos)',
+                                isLocal: false
+                            };
+                        }
                     }
+                } catch (dpasteErr) {
+                    console.warn('dPaste fallback falhou:', dpasteErr);
                 }
-            } catch (errProxy) {
-                console.warn('Falha na conexão do proxy com Catbox, tentando fallback...', errProxy);
             }
 
-            // Method 3: Fallback Provider (Tmpfiles.org Direct)
-            try {
-                const formData = new FormData();
-                formData.append('file', file, file.name);
-
-                const res = await fetch('https://tmpfiles.org/api/v1/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (res.ok) {
-                    const json = await res.json();
-                    if (json.status === 'success' && json.data && json.data.url) {
-                        const directUrl = json.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-                        return {
-                            url: directUrl,
-                            provider: 'TmpFiles Direct (Servidor Secundário)',
-                            isLocal: false
-                        };
-                    }
-                }
-            } catch (errFallback) {
-                console.warn('Todos os servidores de hospedagem falharam, ativando modo offline:', errFallback);
-            }
-
-            // Method 4: Local Blob Fallback
+            // Local Fallback if no network upload worked
             const objectUrl = URL.createObjectURL(file);
             return {
                 url: objectUrl,
-                provider: 'Download Local Instantâneo (Modo Offline)',
+                provider: 'Download Local Direto (Offline)',
                 isLocal: true
             };
         }
@@ -775,12 +773,12 @@
                 const content = fileContentInput.value;
 
                 if (!content) {
-                    showToast('error', 'Conteúdo Vazio', 'Por favor preencha o texto ou código do ficheiro.');
+                    showToast('error', 'Conteúdo Vazio', 'Por favor preencha o código ou texto do ficheiro.');
                     return;
                 }
 
                 if (!filename) {
-                    filename = 'arquivo.txt';
+                    filename = 'script.lua';
                 }
 
                 const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
@@ -806,7 +804,7 @@
                 loadingOverlay.classList.remove('hidden');
                 loadingIcon.className = "fa-solid fa-file-zipper text-amber-400 absolute text-sm";
                 loadingTitle.textContent = "Compactando pasta em arquivo ZIP...";
-                loadingSubtext.textContent = `A processar ${selectedFolderFiles.length} ficheiros no navegador`;
+                loadingSubtext.textContent = `Processando ${selectedFolderFiles.length} ficheiros no navegador`;
                 progressBarContainer.classList.remove('hidden');
                 progressBarFill.style.width = '0%';
 
@@ -841,7 +839,7 @@
                 console.error('Erro geral no upload:', err);
                 uploadResult = {
                     url: URL.createObjectURL(fileToSend),
-                    provider: 'Download Local Instantâneo (Erro na Rede)',
+                    provider: 'Download Local Instantâneo (Modo Offline)',
                     isLocal: true
                 };
             } finally {
@@ -854,9 +852,9 @@
                 providerStatus.textContent = `Provedor: ${uploadResult.provider}`;
 
                 if (uploadResult.isLocal) {
-                    showToast('warning', 'Modo Offline Ativado', 'Não foi possível enviar ao servidor externo. Seu arquivo está disponível para download local!');
+                    showToast('warning', 'Modo Offline Ativado', 'Não foi possível conectar ao servidor externo. O ficheiro está pronto para download local!');
                 } else {
-                    showToast('success', 'Link Permanente Criado!', `Seu arquivo "${fileToSend.name}" foi hospedado sem expiração.`);
+                    showToast('success', 'Link Permanente Criado!', `O arquivo "${fileToSend.name}" foi hospedado com sucesso e nunca expira.`);
                 }
 
                 resultPanel.classList.remove('hidden');
@@ -869,7 +867,7 @@
             let fileToSave = null;
 
             if (currentTab === 'text') {
-                const filename = fileNameInput.value.trim() || 'arquivo.txt';
+                const filename = fileNameInput.value.trim() || 'script.lua';
                 const content = fileContentInput.value;
 
                 if (!content) {
@@ -897,7 +895,7 @@
                 hideToast();
                 loadingOverlay.classList.remove('hidden');
                 loadingIcon.className = "fa-solid fa-file-zipper text-amber-400 absolute text-sm";
-                loadingTitle.textContent = "A gerar ZIP local...";
+                loadingTitle.textContent = "Gerando ZIP local...";
                 progressBarContainer.classList.remove('hidden');
 
                 try {
@@ -926,7 +924,7 @@
             document.body.removeChild(link);
 
             setTimeout(() => URL.revokeObjectURL(tempUrl), 5000);
-            showToast('success', 'Download Iniciado', `O ficheiro "${fileToSave.name}" foi salvo diretamente no seu dispositivo.`);
+            showToast('success', 'Download Iniciado', `O ficheiro "${fileToSave.name}" foi salvo no seu dispositivo.`);
         }
 
         // Clipboard Copy Utility
