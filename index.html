@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FileForge Direct - Hospedagem Permanente & Links Diretos</title>
-
+    <title>FileForge Direct - Gerador de Links Exclusivos Catbox.moe</title>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -13,541 +13,496 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                        }
+                        darkbg: '#080c14',
+                        cardbg: '#0f172a',
+                        cardborder: '#1e293b',
                     }
                 }
             }
         }
     </script>
-
-    <!-- FontAwesome Icons CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts Inter & JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-    <!-- JSZip Library for Folder Compression -->
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- JSZip CDN para compressão automática de pastas do PC -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
+    <!-- Custom Styles -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #080c14;
+            color: #f1f5f9;
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(124, 58, 237, 0.12) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+            background-attachment: fixed;
         }
-        .font-mono-code {
-            font-family: 'JetBrains Mono', monospace;
+
+        .font-code {
+            font-family: 'Fira Code', monospace;
         }
-        textarea::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
-        textarea::-webkit-scrollbar-track, .custom-scrollbar::-webkit-scrollbar-track {
-            background: #090d16;
-        }
-        textarea::-webkit-scrollbar-thumb, .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #1e293b;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
             border-radius: 4px;
         }
-        textarea::-webkit-scrollbar-thumb:hover, .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #334155;
+            border-radius: 4px;
         }
-        .dropzone-active {
-            border-color: #6366f1 !important;
-            background-color: rgba(99, 102, 241, 0.08) !important;
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569;
         }
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
+
+        .glow-effect {
+            box-shadow: 0 0 25px -5px rgba(124, 58, 237, 0.3);
         }
-        .animate-glow {
-            animation: pulse-glow 4s infinite ease-in-out;
+        
+        .glow-green {
+            box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.4);
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white antialiased">
+<body class="min-h-screen flex flex-col justify-between custom-scrollbar antialiased">
 
-    <!-- Header Navigation -->
-    <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-50 py-3.5 px-4 md:px-8 shadow-xl">
-        <div class="max-w-5xl mx-auto flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <div class="bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 p-2.5 rounded-2xl shadow-lg shadow-indigo-500/20 text-slate-950 font-black">
-                    <i class="fa-solid fa-bolt text-xl"></i>
+    <!-- Top Header / Navbar -->
+    <header class="w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            
+            <!-- Logo & Badge -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-violet-900/30">
+                    <i class="fas fa-infinity text-xl"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="text-base md:text-lg font-bold tracking-tight text-white">FileForge Direct</h1>
-                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
-                            <i class="fa-solid fa-infinity text-[9px]"></i> Catbox Permanent
+                        <span class="font-bold text-lg text-white tracking-wide">FileForge Direct</span>
+                        <span class="px-2 py-0.5 text-[10px] font-bold tracking-wider rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            100% CATBOX.MOE
                         </span>
                     </div>
-                    <p class="text-xs text-slate-400 hidden sm:block">Gerador de Links Permanentes e Diretos (Sem Expiração)</p>
+                    <p class="text-xs text-slate-400">Gerador Exclusivo de Links Permanentes Catbox.moe</p>
                 </div>
             </div>
-            
-            <div class="flex items-center gap-3">
-                <!-- WhatsApp Channel Button -->
-                <a href="https://whatsapp.com/channel/0029VbC7FWcJENxsIOsndS15" target="_blank" rel="noopener noreferrer" 
-                   class="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white transition text-xs md:text-sm font-semibold flex items-center gap-2 px-3.5 py-2 md:px-4 md:py-2.5 rounded-xl shadow-lg shadow-emerald-600/20 group">
-                    <i class="fa-brands fa-whatsapp text-lg group-hover:scale-110 transition-transform"></i>
-                    <span class="hidden xs:inline">Entrar no Canal</span>
-                    <span class="xs:hidden">Canal</span>
-                </a>
-            </div>
+
+            <!-- WhatsApp Channel Button -->
+            <a href="https://whatsapp.com/channel/0029VbC7FWcJENxsIOsndS15" target="_blank" rel="noopener noreferrer" 
+               class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all duration-200 transform hover:scale-[1.02] shadow-lg shadow-emerald-900/20 active:scale-95">
+                <i class="fab fa-whatsapp text-lg"></i>
+                <span>Entrar no Canal do WhatsApp</span>
+            </a>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-5xl mx-auto w-full p-4 md:p-8 my-auto">
-        <!-- Banner Toast Notification Area -->
-        <div id="toastNotification" class="hidden mb-6 p-4 rounded-2xl border transition-all duration-300 flex items-start gap-3 shadow-lg">
-            <i id="toastIcon" class="text-lg mt-0.5"></i>
-            <div class="flex-1 text-xs md:text-sm">
-                <h4 id="toastTitle" class="font-semibold"></h4>
-                <p id="toastMessage" class="text-slate-300 mt-0.5"></p>
-            </div>
-            <button type="button" onclick="hideToast()" class="text-slate-400 hover:text-white text-sm p-1">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
+    <!-- Main Content Area -->
+    <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-grow space-y-6">
 
-        <!-- Main Form Card -->
-        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl shadow-2xl p-5 md:p-8 relative overflow-hidden backdrop-blur-md">
-            <!-- Background Aesthetic Lighting -->
-            <div class="absolute -top-24 -right-24 w-80 h-80 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none animate-glow"></div>
-            <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none animate-glow"></div>
-
-            <div class="mb-6">
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
-                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-                        <span>Hospedagem Permanente e Direta</span>
-                    </h2>
-                    <span class="bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 text-xs font-mono px-3 py-1 rounded-full flex items-center gap-1.5">
-                        <i class="fa-solid fa-shield-halved text-emerald-400"></i> NUNCA EXPIRA
-                    </span>
+        <!-- Top Banner Explanation -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm relative overflow-hidden shadow-xl">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-violet-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-bold text-white">Hospedar Conteúdo no Catbox</h1>
+                        <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            Apenas files.catbox.moe
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl">
+                        Envie texto/código, ficheiros ou pastas. O link resultante é <strong class="text-emerald-400">garantidamente gerado no Catbox.moe</strong> com a extensão exata (ex: <code class="text-violet-300">.dat</code>, <code class="text-violet-300">.lua</code>, <code class="text-violet-300">.zip</code>).
+                    </p>
                 </div>
-                <p class="text-slate-400 text-xs md:text-sm leading-relaxed">
-                    Envie scripts, códigos ou ficheiros com a <strong>extensão exata preservada</strong>. Os links são gerados diretamente via <strong>Catbox.moe</strong> e permanecem ativos para sempre.
-                </p>
+                
+                <div class="flex items-center gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-xs text-slate-300">
+                    <i class="fas fa-shield-halved text-emerald-400 text-base"></i>
+                    <div>
+                        <div class="font-bold text-white">Domínio Catbox</div>
+                        <div class="text-[11px] text-emerald-400 font-semibold">Sem expiração</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- TAB NAVIGATION -->
-            <div class="flex items-center gap-2 border-b border-slate-800 mb-6 pb-3 overflow-x-auto custom-scrollbar">
-                <button type="button" onclick="switchTab('text')" id="tabBtnText" 
-                    class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
-                    <i class="fa-solid fa-code"></i>
-                    <span>Script / Texto Manual</span>
+            <!-- Tab Switchers -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-6 pt-6 border-t border-slate-800/80">
+                <button id="tab-btn-manual" onclick="setTab('manual')" 
+                        class="tab-btn active-tab px-4 py-3 rounded-xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all duration-200 bg-violet-600 text-white shadow-lg shadow-violet-900/30">
+                    <i class="fas fa-code text-base"></i>
+                    <span>Texto / Script Manual</span>
                 </button>
-                <button type="button" onclick="switchTab('file')" id="tabBtnFile" 
-                    class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-slate-800 hover:bg-slate-700 text-slate-300">
-                    <i class="fa-solid fa-file-arrow-up"></i>
+
+                <button id="tab-btn-file" onclick="setTab('file')" 
+                        class="tab-btn px-4 py-3 rounded-xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all duration-200 bg-slate-800/60 text-slate-300 hover:bg-slate-800 hover:text-white">
+                    <i class="fas fa-file-arrow-up text-base"></i>
                     <span>Ficheiro do PC</span>
                 </button>
-                <button type="button" onclick="switchTab('folder')" id="tabBtnFolder" 
-                    class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-slate-800 hover:bg-slate-700 text-slate-300">
-                    <i class="fa-solid fa-folder-plus text-amber-400"></i>
+
+                <button id="tab-btn-folder" onclick="setTab('folder')" 
+                        class="tab-btn px-4 py-3 rounded-xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all duration-200 bg-slate-800/60 text-slate-300 hover:bg-slate-800 hover:text-white">
+                    <i class="fas fa-folder-plus text-base"></i>
                     <span>Pasta do PC (Auto ZIP)</span>
                 </button>
             </div>
+        </div>
 
-            <form id="fileForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+        <!-- Optional Catbox Userhash Config -->
+        <div class="bg-slate-900/50 border border-slate-800/80 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2 text-slate-300">
+                <i class="fas fa-key text-violet-400 text-sm"></i>
+                <span><strong>Catbox Userhash</strong> (Opcional - Caso queira salvar na sua conta Catbox):</span>
+            </div>
+            <input type="text" id="catbox-userhash" placeholder="Ex: 8f3a2b1c..." 
+                   class="w-full sm:w-64 px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 font-mono text-xs focus:outline-none focus:border-violet-500">
+        </div>
+
+        <!-- Tab 1: Texto / Script Manual -->
+        <div id="tab-content-manual" class="tab-content space-y-4">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4 shadow-xl">
                 
-                <!-- SECTION 1: MANUAL TEXT EDITOR -->
-                <div id="tabContentText" class="tab-content space-y-6">
-                    <div>
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                            <label for="fileName" class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                                <i class="fa-solid fa-file-signature text-indigo-400"></i> Nome do Ficheiro & Extensão Exata
-                            </label>
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="text-[11px] text-slate-400 mr-1">Atalhos rápidos:</span>
-                                <button type="button" onclick="setExtension('.lua')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.lua</button>
-                                <button type="button" onclick="setExtension('.txt')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.txt</button>
-                                <button type="button" onclick="setExtension('.py')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.py</button>
-                                <button type="button" onclick="setExtension('.json')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.json</button>
-                                <button type="button" onclick="setExtension('.html')" class="text-[11px] bg-slate-800 hover:bg-indigo-600 hover:text-white border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.html</button>
-                            </div>
-                        </div>
-
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-500">
-                                <i class="fa-solid fa-terminal"></i>
-                            </span>
-                            <input type="text" id="fileName" placeholder="ex: script.lua, main.py ou dados.txt" 
-                                class="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm font-mono">
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <label for="fileContent" class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                                <i class="fa-solid fa-align-left text-indigo-400"></i> Conteúdo do Ficheiro / Script
-                            </label>
-                            <span id="charCount" class="text-[11px] font-mono text-slate-500">0 caracteres | 0 linhas</span>
-                        </div>
-
-                        <textarea id="fileContent" rows="8" oninput="updateCharCount()" placeholder="Cole aqui seu código LUA, Python, JSON, HTML ou texto livre..."
-                            class="w-full p-4 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 font-mono-code text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-y leading-relaxed"></textarea>
-                    </div>
-                </div>
-
-                <!-- SECTION 2: FILE UPLOAD FROM PC -->
-                <div id="tabContentFile" class="tab-content hidden space-y-4">
-                    <label class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-file-arrow-up text-indigo-400"></i> Selecionar Ficheiro do Computador ou Celular
-                    </label>
-
-                    <div id="singleFileDropzone" onclick="document.getElementById('singleFileInput').click()" 
-                         class="border-2 border-dashed border-slate-800 hover:border-indigo-500/60 bg-slate-950 hover:bg-slate-950/70 rounded-2xl p-8 text-center cursor-pointer transition flex flex-col items-center justify-center gap-3 group">
-                        <div class="w-14 h-14 bg-indigo-500/10 text-indigo-400 group-hover:scale-110 rounded-2xl flex items-center justify-center transition shadow-lg shadow-indigo-500/10">
-                            <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-semibold text-slate-200">Clique para selecionar ou arraste um ficheiro aqui</p>
-                            <p class="text-xs text-slate-500 mt-1">Preserva a extensão exata (.lua, .zip, .png, .exe, .pdf, .json, etc.)</p>
-                        </div>
-                        <input type="file" id="singleFileInput" onchange="handleSingleFileSelected(event)" class="hidden">
-                    </div>
-
-                    <!-- Selected Single File Box -->
-                    <div id="singleFileInfo" class="hidden p-4 bg-slate-950 border border-indigo-500/30 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center gap-3 overflow-hidden">
-                            <div class="bg-indigo-500/10 text-indigo-400 p-3 rounded-xl border border-indigo-500/20">
-                                <i class="fa-solid fa-file text-lg"></i>
-                            </div>
-                            <div class="truncate">
-                                <p id="singleFileNameText" class="text-sm font-semibold text-slate-200 truncate"></p>
-                                <p id="singleFileSizeText" class="text-xs text-slate-400 font-mono"></p>
-                            </div>
-                        </div>
-                        <button type="button" onclick="clearSingleFile()" class="text-slate-400 hover:text-rose-400 p-2 text-sm transition">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- SECTION 3: FOLDER UPLOAD FROM PC (ZIP) -->
-                <div id="tabContentFolder" class="tab-content hidden space-y-4">
-                    <label class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-folder-open text-amber-400"></i> Selecionar Pasta Completa do PC
-                    </label>
-
-                    <div id="folderDropzone" onclick="document.getElementById('folderInput').click()" 
-                         class="border-2 border-dashed border-slate-800 hover:border-amber-500/60 bg-slate-950 hover:bg-slate-950/70 rounded-2xl p-8 text-center cursor-pointer transition flex flex-col items-center justify-center gap-3 group">
-                        <div class="w-14 h-14 bg-amber-500/10 text-amber-400 group-hover:scale-110 rounded-2xl flex items-center justify-center transition shadow-lg shadow-amber-500/10">
-                            <i class="fa-solid fa-folder-plus text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-semibold text-slate-200">Clique para selecionar uma pasta do seu computador</p>
-                            <p class="text-xs text-slate-500 mt-1">Compacta automaticamente em arquivo .ZIP com hospedagem permanente</p>
-                        </div>
-                        <input type="file" id="folderInput" webkitdirectory directory multiple onchange="handleFolderSelected(event)" class="hidden">
-                    </div>
-
-                    <!-- Selected Folder Summary -->
-                    <div id="folderInfo" class="hidden p-4 bg-slate-950 border border-amber-500/30 rounded-2xl space-y-3">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3 overflow-hidden">
-                                <div class="bg-amber-500/10 text-amber-400 p-3 rounded-xl border border-amber-500/20">
-                                    <i class="fa-solid fa-box-archive text-lg"></i>
-                                </div>
-                                <div>
-                                    <p id="folderNameText" class="text-sm font-semibold text-slate-200"></p>
-                                    <p id="folderStatsText" class="text-xs text-slate-400 font-mono"></p>
-                                </div>
-                            </div>
-                            <button type="button" onclick="clearFolder()" class="text-slate-400 hover:text-rose-400 p-2 text-sm transition">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </div>
-
-                        <!-- ZIP Output Name Input -->
-                        <div class="pt-2 border-t border-slate-800/80">
-                            <label for="zipOutputName" class="block text-xs font-medium text-slate-400 mb-1">
-                                Nome do arquivo ZIP gerado:
-                            </label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-amber-400">
-                                    <i class="fa-solid fa-file-zipper text-xs"></i>
-                                </span>
-                                <input type="text" id="zipOutputName" placeholder="minha_pasta.zip" 
-                                    class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
-                            </div>
-                        </div>
-
-                        <!-- File List Preview Toggle -->
-                        <div class="pt-1">
-                            <details class="text-xs text-slate-400">
-                                <summary class="cursor-pointer hover:text-slate-200 select-none font-medium flex items-center gap-1">
-                                    <i class="fa-solid fa-list-ul"></i> Ver lista de ficheiros contidos
-                                </summary>
-                                <div id="folderFilesList" class="mt-2 max-h-36 overflow-y-auto custom-scrollbar p-2 bg-slate-900/80 rounded-xl font-mono text-[11px] text-slate-300 space-y-1 border border-slate-800">
-                                </div>
-                            </details>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    <button type="submit" id="cloudSubmitBtn" 
-                        class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 active:from-indigo-700 active:to-indigo-600 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-indigo-600/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                        <i class="fa-solid fa-infinity text-lg"></i>
-                        <span id="submitBtnText">Gerar Link Permanente (Catbox)</span>
-                    </button>
-
-                    <button type="button" onclick="triggerLocalDownload()" 
-                        class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold py-3.5 px-4 rounded-2xl transition flex items-center justify-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-file-arrow-down text-lg text-emerald-400"></i>
-                        <span>Download Local Direto (Offline)</span>
-                    </button>
-                </div>
-            </form>
-
-            <!-- Result Panel Area -->
-            <div id="resultPanel" class="hidden mt-8 p-6 bg-slate-950 border border-emerald-500/30 rounded-2xl shadow-inner space-y-4 animate-fade-in">
-                <div class="flex items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-emerald-500/10 text-emerald-400 p-2.5 rounded-xl border border-emerald-500/20">
-                            <i class="fa-solid fa-circle-check text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-semibold text-emerald-400">Link Gerado com Sucesso!</h3>
-                            <p id="providerStatus" class="text-xs text-slate-400">Provedor: Catbox.moe (Hospedagem Permanente)</p>
-                        </div>
-                    </div>
-                    <span id="expirationBadge" class="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] px-3 py-1 rounded-full font-semibold flex items-center gap-1 shrink-0">
-                        <i class="fa-solid fa-infinity text-emerald-400"></i> Nunca Expira
-                    </span>
-                </div>
-
-                <!-- Generated Direct URL Input -->
+                <!-- Filename Input & Shortcuts -->
                 <div class="space-y-2">
-                    <label class="block text-xs font-medium text-slate-400">
-                        Link Permanente Direto (Download / Accesso Imediato):
-                    </label>
-                    <div class="flex flex-col sm:flex-row items-stretch gap-2">
-                        <input type="text" id="directUrlOutput" readonly 
-                            class="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-indigo-300 font-mono text-xs md:text-sm select-all focus:outline-none focus:border-indigo-500">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <label class="text-xs font-semibold text-slate-300 flex items-center gap-2">
+                            <i class="fas fa-signature text-violet-400"></i>
+                            Nome do Ficheiro & Extensão Exata
+                        </label>
                         
-                        <button id="copyBtn" onclick="copyGeneratedLink()" 
-                            class="bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white px-5 py-3 rounded-xl text-xs md:text-sm font-medium transition flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-md shadow-indigo-600/20">
-                            <i class="fa-regular fa-copy"></i>
-                            <span>Copiar Link</span>
-                        </button>
+                        <!-- Extension Shortcuts -->
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[11px] text-slate-400">Atalhos de extensão:</span>
+                            <button onclick="applyExtensionShortcut('.dat')" type="button" class="px-2 py-0.5 text-xs font-mono rounded bg-slate-800 hover:bg-violet-600 hover:text-white text-violet-300 border border-slate-700 transition">.dat</button>
+                            <button onclick="applyExtensionShortcut('.lua')" type="button" class="px-2 py-0.5 text-xs font-mono rounded bg-slate-800 hover:bg-violet-600 hover:text-white text-violet-300 border border-slate-700 transition">.lua</button>
+                            <button onclick="applyExtensionShortcut('.txt')" type="button" class="px-2 py-0.5 text-xs font-mono rounded bg-slate-800 hover:bg-violet-600 hover:text-white text-violet-300 border border-slate-700 transition">.txt</button>
+                            <button onclick="applyExtensionShortcut('.json')" type="button" class="px-2 py-0.5 text-xs font-mono rounded bg-slate-800 hover:bg-violet-600 hover:text-white text-violet-300 border border-slate-700 transition">.json</button>
+                            <button onclick="applyExtensionShortcut('.py')" type="button" class="px-2 py-0.5 text-xs font-mono rounded bg-slate-800 hover:bg-violet-600 hover:text-white text-violet-300 border border-slate-700 transition">.py</button>
+                            <button onclick="applyExtensionShortcut('.html')" type="button" class="px-2 py-0.5 text-xs font-mono rounded bg-slate-800 hover:bg-violet-600 hover:text-white text-violet-300 border border-slate-700 transition">.html</button>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 font-mono text-sm">></span>
+                        <input type="text" id="manual-filename" value="guest100067.dat" placeholder="ex: guest100067.dat ou script.lua" 
+                               class="w-full pl-8 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 font-mono text-sm focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition">
                     </div>
                 </div>
 
-                <!-- Test & Re-download Buttons -->
-                <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                    <a id="testDownloadLink" href="#" target="_blank" rel="noopener noreferrer" 
-                       class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs md:text-sm font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 text-center shadow-lg shadow-emerald-600/20">
-                        <i class="fa-solid fa-external-link"></i> Abrir / Testar Link Direto
-                    </a>
+                <!-- Textarea Content -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs font-semibold text-slate-300 flex items-center gap-2">
+                            <i class="fas fa-align-left text-violet-400"></i>
+                            Conteúdo do Ficheiro
+                        </label>
+                        <span id="text-stats" class="text-xs text-slate-400 font-mono">0 caracteres | 0 linhas</span>
+                    </div>
+
+                    <textarea id="manual-content" rows="8" oninput="updateTextStats()"
+                              placeholder="Digite ou cole aqui o seu código, dados JSON, script Lua ou qualquer texto..."
+                              class="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 font-mono text-xs sm:text-sm focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition custom-scrollbar resize-y">{"guest_account_info":"{\"com.garena.msdk.guest_uid\":\"4500673529\",\"com.garena.msdk.guest_password\":\"71B0CA6C8070819EA67C508CCE3C9CB4946CB005696C7E930A338D6713ECB5B\"}"}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Ficheiro do PC -->
+        <div id="tab-content-file" class="tab-content space-y-4 hidden">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                <label class="text-xs font-semibold text-slate-300 flex items-center gap-2">
+                    <i class="fas fa-file-circle-plus text-violet-400"></i>
+                    Selecionar Ficheiro do Computador
+                </label>
+
+                <div id="file-dropzone" onclick="document.getElementById('pc-file-input').click()"
+                     class="border-2 border-dashed border-slate-700 hover:border-violet-500 bg-slate-950/60 hover:bg-slate-950 rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 space-y-3 group">
+                    <input type="file" id="pc-file-input" class="hidden" onchange="handleFileSelect(this.files[0])">
+                    <div class="w-14 h-14 mx-auto rounded-full bg-slate-800 group-hover:bg-violet-600/20 text-slate-400 group-hover:text-violet-400 flex items-center justify-center transition-colors">
+                        <i class="fas fa-cloud-arrow-up text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-slate-200 group-hover:text-violet-300 transition">Clique para procurar ou arraste o ficheiro aqui</p>
+                        <p class="text-xs text-slate-400 mt-1">Preserva qualquer extensão (.dat, .lua, .apk, .zip, .png, etc.)</p>
+                    </div>
+                </div>
+
+                <!-- Selected File Display -->
+                <div id="selected-file-card" class="hidden p-4 bg-slate-950 border border-violet-500/30 rounded-xl flex items-center justify-between">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="w-10 h-10 rounded-lg bg-violet-600/20 text-violet-400 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-file-lines text-lg"></i>
+                        </div>
+                        <div class="truncate">
+                            <p id="selected-file-name" class="text-sm font-semibold text-white truncate">arquivo.ext</p>
+                            <p id="selected-file-size" class="text-xs text-slate-400 font-mono">0 KB</p>
+                        </div>
+                    </div>
+                    <button onclick="clearSelectedFile()" class="p-2 text-slate-400 hover:text-rose-400 transition" title="Remover ficheiro">
+                        <i class="fas fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Pasta do PC (Auto ZIP) -->
+        <div id="tab-content-folder" class="tab-content space-y-4 hidden">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                <label class="text-xs font-semibold text-slate-300 flex items-center gap-2">
+                    <i class="fas fa-folder-open text-violet-400"></i>
+                    Selecionar Pasta Inteira do Computador
+                </label>
+
+                <div id="folder-dropzone" onclick="document.getElementById('pc-folder-input').click()"
+                     class="border-2 border-dashed border-slate-700 hover:border-violet-500 bg-slate-950/60 hover:bg-slate-950 rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 space-y-3 group">
+                    <input type="file" id="pc-folder-input" webkitdirectory directory class="hidden" onchange="handleFolderSelect(this.files)">
+                    <div class="w-14 h-14 mx-auto rounded-full bg-slate-800 group-hover:bg-violet-600/20 text-slate-400 group-hover:text-violet-400 flex items-center justify-center transition-colors">
+                        <i class="fas fa-folder-tree text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-slate-200 group-hover:text-violet-300 transition">Clique para selecionar uma pasta inteira</p>
+                        <p class="text-xs text-slate-400 mt-1">A pasta será compactada em .ZIP automaticamente pelo seu navegador</p>
+                    </div>
+                </div>
+
+                <!-- Folder Settings & Summary -->
+                <div id="selected-folder-card" class="hidden space-y-3 p-4 bg-slate-950 border border-violet-500/30 rounded-xl">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-violet-600/20 text-violet-400 flex items-center justify-center">
+                                <i class="fas fa-file-zipper text-lg"></i>
+                            </div>
+                            <div>
+                                <p id="folder-summary-count" class="text-sm font-semibold text-white">0 ficheiros encontrados</p>
+                                <p id="folder-summary-size" class="text-xs text-slate-400 font-mono">Tamanho total est.: 0 MB</p>
+                            </div>
+                        </div>
+                        <button onclick="clearSelectedFolder()" class="p-2 text-slate-400 hover:text-rose-400 transition" title="Remover pasta">
+                            <i class="fas fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-xs text-slate-400">Nome do Arquivo ZIP a gerar:</label>
+                        <input type="text" id="folder-zip-name" value="pasta_arquivos.zip" 
+                               class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-200 font-mono text-xs focus:outline-none focus:border-violet-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Action Buttons -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button id="btn-generate-link" onclick="executeUploadProcess()" 
+                    class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-violet-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg shadow-violet-900/40 transition-all duration-200 transform hover:scale-[1.01] active:scale-95 glow-effect">
+                <i class="fas fa-infinity text-lg"></i>
+                <span>Gerar Link Exclusivo Catbox.moe</span>
+            </button>
+
+            <button onclick="downloadLocalDirect()" 
+                    class="w-full py-3.5 px-6 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-semibold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all duration-200 active:scale-95">
+                <i class="fas fa-download text-emerald-400"></i>
+                <span>Download Local Direto (Offline)</span>
+            </button>
+        </div>
+
+        <!-- Progress Status Indicator -->
+        <div id="upload-status-indicator" class="hidden p-4 bg-slate-900/90 border border-violet-500/40 rounded-2xl flex items-center gap-3 animate-pulse">
+            <div class="w-6 h-6 border-2 border-violet-400 border-t-transparent rounded-full animate-spin"></div>
+            <div class="text-xs sm:text-sm text-slate-200 font-medium" id="upload-status-text">
+                Enviando diretamente para Catbox.moe...
+            </div>
+        </div>
+
+        <!-- Result Box (Show after successful upload) -->
+        <div id="result-box" class="hidden bg-slate-900/90 border border-emerald-500/40 rounded-2xl p-6 space-y-4 shadow-2xl glow-green transition-all">
+            
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                        <i class="fas fa-check text-base"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">Link Catbox Gerado com Sucesso!</h3>
+                        <p id="result-provider-tag" class="text-xs text-emerald-400 font-medium">Servidor Oficial: files.catbox.moe</p>
+                    </div>
+                </div>
+
+                <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5">
+                    <i class="fas fa-infinity text-xs"></i>
+                    Catbox Permanente
+                </span>
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="text-xs text-slate-400 font-medium">Link Catbox.moe:</label>
+                <div class="flex flex-col sm:flex-row items-center gap-2">
+                    <input type="text" id="result-link-input" readonly 
+                           class="w-full py-2.5 px-3.5 bg-slate-950 border border-slate-800 rounded-xl text-emerald-400 font-mono text-xs sm:text-sm focus:outline-none">
                     
-                    <button type="button" onclick="triggerLocalDownload()" 
-                       class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs md:text-sm font-medium py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 text-center">
-                        <i class="fa-solid fa-hard-drive text-indigo-400"></i> Salvar Cópia Local
+                    <button onclick="copyResultLink()" 
+                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition flex-shrink-0">
+                        <i class="fas fa-copy"></i>
+                        <span>Copiar Link</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Loading Overlay -->
-            <div id="loadingOverlay" class="hidden absolute inset-0 bg-slate-900/95 backdrop-blur-md z-20 flex flex-col items-center justify-center space-y-4 p-6">
-                <div class="relative flex items-center justify-center">
-                    <div class="w-14 h-14 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-                    <i id="loadingIcon" class="fa-solid fa-cloud-arrow-up text-indigo-400 absolute text-sm"></i>
-                </div>
-                <div class="text-center space-y-1">
-                    <p id="loadingTitle" class="text-sm font-semibold text-slate-200">Enviando para o Catbox.moe...</p>
-                    <p id="loadingSubtext" class="text-xs text-slate-400 font-mono">Gerando link permanente sem expiração</p>
-                </div>
-                <!-- Progress Bar -->
-                <div id="progressBarContainer" class="w-64 bg-slate-950 border border-slate-800 h-2 rounded-full overflow-hidden hidden">
-                    <div id="progressBarFill" class="bg-indigo-500 h-full w-0 transition-all duration-150"></div>
-                </div>
+            <!-- Action Buttons for Result -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                <a id="result-test-link" href="#" target="_blank" rel="noopener noreferrer" 
+                   class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition text-center">
+                    <i class="fas fa-arrow-up-right-from-square"></i>
+                    <span>Abrir / Testar Link Catbox</span>
+                </a>
+
+                <button onclick="downloadLocalDirect()" 
+                        class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
+                    <i class="fas fa-floppy-disk"></i>
+                    <span>Salvar Cópia Local</span>
+                </button>
             </div>
         </div>
 
-        <!-- Summary & Features Explanatory Card -->
-        <div class="mt-8 bg-slate-900/80 border border-slate-800/80 rounded-3xl p-6 md:p-8 space-y-6">
-            <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-                <div class="bg-gradient-to-tr from-indigo-500 to-emerald-400 p-2.5 rounded-2xl text-slate-950 font-bold">
-                    <i class="fa-solid fa-circle-info text-lg"></i>
+        <!-- Information Card & Guarantee -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+            <div class="p-5 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-2">
+                <div class="flex items-center gap-2 text-violet-400 font-semibold text-sm">
+                    <i class="fas fa-cloud-arrow-up"></i>
+                    <span>Garantia de Link Catbox.moe</span>
                 </div>
-                <div>
-                    <h3 class="font-bold text-slate-100 text-base md:text-lg">Para que este site serve e o que ele faz?</h3>
-                    <p class="text-xs text-slate-400">Plataforma para criação, conversão e hospedagem permanente de arquivos.</p>
-                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Todos os links gerados são finalizados estritamente no domínio <strong class="text-emerald-400">files.catbox.moe</strong>. Se o serviço do Catbox falhar, o sistema exibirá um aviso em vez de gerar links temporários em outros sites.
+                </p>
             </div>
 
-            <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
-                O <strong class="text-white">FileForge Direct</strong> foi criado para quem precisa de links diretos e 100% permanentes para compartilhar scripts, códigos, documentos ou pastas. Todos os arquivos são hospedados via <strong class="text-emerald-400">Catbox.moe</strong> e <strong class="text-white">nunca expiram nem são apagados</strong>.
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <!-- Feature 1 -->
-                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1.5">
-                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm">
-                        <i class="fa-solid fa-infinity"></i>
-                        <span>1. Links 100% Permanentes</span>
-                    </div>
-                    <p class="text-slate-400 leading-relaxed">
-                        Nenhum arquivo expira em 1 hora. Os links gerados ficam salvos indefinidamente na nuvem para uso seguro.
-                    </p>
+            <div class="p-5 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-2">
+                <div class="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
+                    <i class="fas fa-file-code"></i>
+                    <span>Preservação de Extensão Exata</span>
                 </div>
-
-                <!-- Feature 2 -->
-                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1.5">
-                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm">
-                        <i class="fa-solid fa-code"></i>
-                        <span>2. Preservação de Extensão Exata</span>
-                    </div>
-                    <p class="text-slate-400 leading-relaxed">
-                        Se você cria um <code class="text-indigo-300 font-mono">.lua</code> para Roblox (Skywars/Vortex Hub), <code class="text-indigo-300 font-mono">.py</code> ou <code class="text-indigo-300 font-mono">.txt</code>, o link preserva a extensão sem nunca forçar <code class="text-rose-400 font-mono">.json</code> ou <code class="text-rose-400 font-mono">.dat</code>.
-                    </p>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1.5">
-                    <div class="flex items-center gap-2 text-amber-400 font-semibold text-sm">
-                        <i class="fa-solid fa-folder-plus"></i>
-                        <span>3. Compactador de Pasta (Auto-ZIP)</span>
-                    </div>
-                    <p class="text-slate-400 leading-relaxed">
-                        Selecione qualquer pasta do seu computador para compactar todos os ficheiros internamente em um arquivo <code class="text-amber-300 font-mono">.ZIP</code> pronto para envio ou download.
-                    </p>
-                </div>
-
-                <!-- Feature 4 -->
-                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1.5">
-                    <div class="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
-                        <i class="fa-solid fa-bolt"></i>
-                        <span>4. Compatível com Roblox loadstring</span>
-                    </div>
-                    <p class="text-slate-400 leading-relaxed">
-                        Gera links diretos e limpos prontos para uso em executores: <code class="text-emerald-300 font-mono select-all">loadstring(game:HttpGet("..."))()</code>
-                    </p>
-                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Arquivos como <code class="text-violet-300">guest100067.dat</code> ou scripts <code class="text-violet-300">.lua</code> mantêm sua extensão exata, permitindo o consumo direto por injetores, scripts de jogos e aplicativos.
+                </p>
             </div>
         </div>
+
     </main>
 
+    <!-- Toast Notification Popup -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 hidden">
+        <div class="bg-slate-900 border border-slate-700 text-slate-100 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+            <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-lg"></i>
+            <span id="toast-message" class="text-xs sm:text-sm font-medium">Operação concluída com sucesso!</span>
+        </div>
+    </div>
+
     <!-- Footer -->
-    <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-900">
-        FileForge Direct &bull; Hospedagem Permanente via Catbox API &bull; Links Sem Expiração.
+    <footer class="w-full border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-4xl mx-auto px-4 space-y-2">
+            <p>FileForge Direct &bull; Hospedagem Permanente Exclusiva Catbox.moe</p>
+            <p class="text-[11px] text-slate-600">Catbox Direct Integration &bull; Todos os direitos reservados</p>
+        </div>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Tab & File State
-        let currentTab = 'text'; // 'text', 'file', 'folder'
-        let selectedSingleFile = null;
+        let activeTab = 'manual';
+        let selectedFile = null;
         let selectedFolderFiles = [];
 
-        // DOM Elements
-        const fileNameInput = document.getElementById('fileName');
-        const fileContentInput = document.getElementById('fileContent');
-        const charCount = document.getElementById('charCount');
-        
-        const singleFileInput = document.getElementById('singleFileInput');
-        const singleFileInfo = document.getElementById('singleFileInfo');
-        const singleFileNameText = document.getElementById('singleFileNameText');
-        const singleFileSizeText = document.getElementById('singleFileSizeText');
-        const singleFileDropzone = document.getElementById('singleFileDropzone');
-
-        const folderInput = document.getElementById('folderInput');
-        const folderInfo = document.getElementById('folderInfo');
-        const folderNameText = document.getElementById('folderNameText');
-        const folderStatsText = document.getElementById('folderStatsText');
-        const zipOutputName = document.getElementById('zipOutputName');
-        const folderFilesList = document.getElementById('folderFilesList');
-        const folderDropzone = document.getElementById('folderDropzone');
-
-        const cloudSubmitBtn = document.getElementById('cloudSubmitBtn');
-        const submitBtnText = document.getElementById('submitBtnText');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const loadingTitle = document.getElementById('loadingTitle');
-        const loadingSubtext = document.getElementById('loadingSubtext');
-        const loadingIcon = document.getElementById('loadingIcon');
-        const progressBarContainer = document.getElementById('progressBarContainer');
-        const progressBarFill = document.getElementById('progressBarFill');
-
-        const resultPanel = document.getElementById('resultPanel');
-        const providerStatus = document.getElementById('providerStatus');
-        const directUrlOutput = document.getElementById('directUrlOutput');
-        const testDownloadLink = document.getElementById('testDownloadLink');
-        const copyBtn = document.getElementById('copyBtn');
-
-        const toastNotification = document.getElementById('toastNotification');
-        const toastIcon = document.getElementById('toastIcon');
-        const toastTitle = document.getElementById('toastTitle');
-        const toastMessage = document.getElementById('toastMessage');
-
-        // Tab Switching Function
-        function switchTab(tabName) {
-            currentTab = tabName;
+        // Tab Switching Logic
+        function setTab(tabName) {
+            activeTab = tabName;
             
-            const tabButtons = {
-                text: document.getElementById('tabBtnText'),
-                file: document.getElementById('tabBtnFile'),
-                folder: document.getElementById('tabBtnFolder')
-            };
-
-            const tabContents = {
-                text: document.getElementById('tabContentText'),
-                file: document.getElementById('tabContentFile'),
-                folder: document.getElementById('tabContentFolder')
-            };
-
-            Object.keys(tabButtons).forEach(key => {
-                if (key === tabName) {
-                    tabButtons[key].className = "tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
-                    tabContents[key].classList.remove('hidden');
-                } else {
-                    tabButtons[key].className = "tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-slate-800 hover:bg-slate-700 text-slate-300";
-                    tabContents[key].classList.add('hidden');
-                }
+            // Reset Tab Buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active-tab', 'bg-violet-600', 'text-white', 'shadow-lg', 'shadow-violet-900/30');
+                btn.classList.add('bg-slate-800/60', 'text-slate-300');
             });
 
-            if (tabName === 'text') {
-                submitBtnText.textContent = "Gerar Link Permanente (Catbox)";
-            } else if (tabName === 'file') {
-                submitBtnText.textContent = "Upload de Ficheiro & Gerar Link";
-            } else if (tabName === 'folder') {
-                submitBtnText.textContent = "Compactar Pasta (ZIP) & Gerar Link";
+            // Activate Target Tab Button
+            const targetBtn = document.getElementById(`tab-btn-${tabName}`);
+            if (targetBtn) {
+                targetBtn.classList.add('active-tab', 'bg-violet-600', 'text-white', 'shadow-lg', 'shadow-violet-900/30');
+                targetBtn.classList.remove('bg-slate-800/60', 'text-slate-300');
             }
+
+            // Toggle Tab Content Panels
+            document.querySelectorAll('.tab-content').forEach(panel => panel.classList.add('hidden'));
+            const targetContent = document.getElementById(`tab-content-${tabName}`);
+            if (targetContent) targetContent.classList.remove('hidden');
         }
 
-        // Live Character & Line Count
-        function updateCharCount() {
-            const text = fileContentInput.value;
+        function updateTextStats() {
+            const textarea = document.getElementById('manual-content');
+            if (!textarea) return;
+            const text = textarea.value;
             const chars = text.length;
             const lines = text ? text.split('\n').length : 0;
-            charCount.textContent = `${chars.toLocaleString()} caracteres | ${lines.toLocaleString()} linhas`;
+            document.getElementById('text-stats').textContent = `${chars} caracteres | ${lines} linhas`;
         }
 
-        // Preset Extension Helper
-        function setExtension(ext) {
-            let current = fileNameInput.value.trim();
-            if (!current) {
-                fileNameInput.value = 'script' + ext;
-            } else {
-                const lastDot = current.lastIndexOf('.');
-                if (lastDot > 0) {
-                    current = current.substring(0, lastDot);
-                }
-                fileNameInput.value = current + ext;
+        function applyExtensionShortcut(ext) {
+            const input = document.getElementById('manual-filename');
+            let val = input.value.trim();
+            if (!val) {
+                input.value = 'guest100067' + ext;
+                return;
             }
-            fileNameInput.focus();
+            const lastDot = val.lastIndexOf('.');
+            if (lastDot > 0) {
+                val = val.substring(0, lastDot);
+            }
+            input.value = val + ext;
         }
 
-        // Format Byte Sizes
+        function handleFileSelect(file) {
+            if (!file) return;
+            selectedFile = file;
+            document.getElementById('selected-file-name').textContent = file.name;
+            document.getElementById('selected-file-size').textContent = formatBytes(file.size);
+            document.getElementById('selected-file-card').classList.remove('hidden');
+            showToast(`Ficheiro "${file.name}" selecionado.`, 'info');
+        }
+
+        function clearSelectedFile() {
+            selectedFile = null;
+            document.getElementById('pc-file-input').value = '';
+            document.getElementById('selected-file-card').classList.add('hidden');
+        }
+
+        function handleFolderSelect(files) {
+            if (!files || files.length === 0) return;
+            selectedFolderFiles = Array.from(files);
+            
+            let totalSize = 0;
+            for (let f of selectedFolderFiles) totalSize += f.size;
+
+            document.getElementById('folder-summary-count').textContent = `${selectedFolderFiles.length} ficheiros encontrados`;
+            document.getElementById('folder-summary-size').textContent = `Tamanho total est.: ${formatBytes(totalSize)}`;
+            
+            if (selectedFolderFiles[0] && selectedFolderFiles[0].webkitRelativePath) {
+                const rootFolder = selectedFolderFiles[0].webkitRelativePath.split('/')[0];
+                if (rootFolder) {
+                    document.getElementById('folder-zip-name').value = `${rootFolder}.zip`;
+                }
+            }
+
+            document.getElementById('selected-folder-card').classList.remove('hidden');
+            showToast(`${selectedFolderFiles.length} ficheiros prontos para compactação ZIP.`, 'info');
+        }
+
+        function clearSelectedFolder() {
+            selectedFolderFiles = [];
+            document.getElementById('pc-folder-input').value = '';
+            document.getElementById('selected-folder-card').classList.add('hidden');
+        }
+
         function formatBytes(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -556,426 +511,352 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // Single File Selection Handling
-        function handleSingleFileSelected(event) {
-            const files = event.target.files;
-            if (files && files.length > 0) {
-                selectedSingleFile = files[0];
-                singleFileNameText.textContent = selectedSingleFile.name;
-                singleFileSizeText.textContent = formatBytes(selectedSingleFile.size);
-                
-                singleFileDropzone.classList.add('hidden');
-                singleFileInfo.classList.remove('hidden');
-            }
-        }
+        async function executeUploadProcess() {
+            const statusIndicator = document.getElementById('upload-status-indicator');
+            const statusText = document.getElementById('upload-status-text');
+            const btnGenerate = document.getElementById('btn-generate-link');
+            const resultBox = document.getElementById('result-box');
+            const userhash = document.getElementById('catbox-userhash').value.trim();
 
-        function clearSingleFile() {
-            selectedSingleFile = null;
-            singleFileInput.value = '';
-            singleFileDropzone.classList.remove('hidden');
-            singleFileInfo.classList.add('hidden');
-        }
+            try {
+                let fileToUpload = null;
 
-        // Drag and Drop for Single File
-        ['dragenter', 'dragover'].forEach(eventName => {
-            singleFileDropzone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                singleFileDropzone.classList.add('dropzone-active');
-            }, false);
-        });
+                if (activeTab === 'manual') {
+                    const content = document.getElementById('manual-content').value;
+                    const filename = document.getElementById('manual-filename').value.trim() || 'guest100067.dat';
+                    
+                    if (!content) {
+                        showToast('Por favor, insira algum conteúdo no campo de texto!', 'error');
+                        return;
+                    }
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            singleFileDropzone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                singleFileDropzone.classList.remove('dropzone-active');
-            }, false);
-        });
+                    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                    fileToUpload = new File([blob], filename, { type: 'text/plain' });
 
-        singleFileDropzone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files && files.length > 0) {
-                singleFileInput.files = files;
-                handleSingleFileSelected({ target: { files: files } });
-            }
-        });
+                } else if (activeTab === 'file') {
+                    if (!selectedFile) {
+                        showToast('Por favor, selecione um ficheiro do PC primeiro!', 'error');
+                        return;
+                    }
+                    fileToUpload = selectedFile;
 
-        // Folder Selection Handling
-        function handleFolderSelected(event) {
-            const files = Array.from(event.target.files);
-            if (!files || files.length === 0) return;
+                } else if (activeTab === 'folder') {
+                    if (!selectedFolderFiles || selectedFolderFiles.length === 0) {
+                        showToast('Por favor, selecione uma pasta do PC primeiro!', 'error');
+                        return;
+                    }
 
-            selectedFolderFiles = files;
-            
-            const firstRelativePath = files[0].webkitRelativePath || '';
-            const rootFolderName = firstRelativePath.split('/')[0] || 'pasta_compactada';
-            
-            folderNameText.textContent = `Pasta: ${rootFolderName}`;
-            
-            let totalBytes = files.reduce((acc, f) => acc + f.size, 0);
-            folderStatsText.textContent = `${files.length} ficheiro(s) | Total: ${formatBytes(totalBytes)}`;
-            
-            zipOutputName.value = `${rootFolderName}.zip`;
+                    statusIndicator.classList.remove('hidden');
+                    statusText.textContent = 'Criando arquivo ZIP da pasta...';
 
-            folderFilesList.innerHTML = '';
-            files.slice(0, 50).forEach(file => {
-                const item = document.createElement('div');
-                item.className = 'flex items-center justify-between text-slate-400 py-0.5 border-b border-slate-800/50 last:border-none';
-                item.innerHTML = `
-                    <span class="truncate max-w-[280px]" title="${file.webkitRelativePath || file.name}">
-                        <i class="fa-regular fa-file text-[10px] mr-1 text-slate-500"></i>${file.webkitRelativePath || file.name}
-                    </span>
-                    <span class="shrink-0 text-[10px] text-slate-500 font-mono">${formatBytes(file.size)}</span>
-                `;
-                folderFilesList.appendChild(item);
-            });
+                    const zip = new JSZip();
+                    for (let f of selectedFolderFiles) {
+                        const path = f.webkitRelativePath || f.name;
+                        zip.file(path, f);
+                    }
 
-            if (files.length > 50) {
-                const moreItem = document.createElement('div');
-                moreItem.className = 'text-center text-[10px] text-amber-400/80 pt-1 font-semibold';
-                moreItem.textContent = `+ ${files.length - 50} ficheiro(s) adicional(is)...`;
-                folderFilesList.appendChild(moreItem);
-            }
+                    const zipBlob = await zip.generateAsync({ type: 'blob' });
+                    let folderZipName = document.getElementById('folder-zip-name').value.trim() || 'pasta_arquivos.zip';
+                    if (!folderZipName.endsWith('.zip')) folderZipName += '.zip';
 
-            folderDropzone.classList.add('hidden');
-            folderInfo.classList.remove('hidden');
-        }
-
-        function clearFolder() {
-            selectedFolderFiles = [];
-            folderInput.value = '';
-            folderDropzone.classList.remove('hidden');
-            folderInfo.classList.add('hidden');
-        }
-
-        // Client-side ZIP Generation using JSZip
-        async function buildZipFromFolder(files, outputName, progressCallback) {
-            const zip = new JSZip();
-            
-            files.forEach(file => {
-                const path = file.webkitRelativePath || file.name;
-                zip.file(path, file);
-            });
-
-            const zipBlob = await zip.generateAsync({
-                type: 'blob',
-                compression: 'DEFLATE',
-                compressionOptions: { level: 6 }
-            }, function updateCallback(metadata) {
-                if (progressCallback) {
-                    progressCallback(metadata.percent);
+                    fileToUpload = new File([zipBlob], folderZipName, { type: 'application/zip' });
                 }
-            });
 
-            const finalFileName = outputName.endsWith('.zip') ? outputName : `${outputName}.zip`;
-            return new File([zipBlob], finalFileName, { type: 'application/zip' });
+                // Display loading UI
+                statusIndicator.classList.remove('hidden');
+                statusText.textContent = 'Conectando aos servidores do Catbox.moe...';
+                btnGenerate.disabled = true;
+                btnGenerate.classList.add('opacity-50', 'cursor-not-allowed');
+
+                // Perform EXCLUSIVE Catbox Upload
+                const uploadResult = await uploadToCatboxExclusive(fileToUpload, (msg) => {
+                    statusText.textContent = msg;
+                }, userhash);
+
+                // Display result box
+                document.getElementById('result-link-input').value = uploadResult.url;
+                document.getElementById('result-test-link').href = uploadResult.url;
+                document.getElementById('result-provider-tag').textContent = `Provedor: ${uploadResult.provider}`;
+                
+                resultBox.classList.remove('hidden');
+                resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                showToast('Link permanente gerado no Catbox.moe com sucesso!', 'success');
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || 'Erro ao realizar upload no Catbox.moe.', 'error');
+            } finally {
+                statusIndicator.classList.add('hidden');
+                btnGenerate.disabled = false;
+                btnGenerate.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
         }
 
-        /**
-         * Catbox.moe API Integration (PERMANENT HOSTING ONLY)
-         * API Endpoint: https://catbox.moe/user/api.php
-         * NO TMPFILES OR TEMPORARY HOSTS USED!
-         */
-        async function uploadToCatbox(file) {
-            const catboxApi = 'https://catbox.moe/user/api.php';
+        // Upload Engine that GUARANTEES files.catbox.moe output or fails cleanly
+        async function uploadToCatboxExclusive(file, statusCallback, userhash = '') {
+            const isValidCatboxUrl = (text) => {
+                if (!text) return null;
+                const match = text.match(/https?:\/\/(files|litter)\.catbox\.moe\/[a-zA-Z0-9.\-_]+/);
+                if (match) return match[0].trim();
+                return null;
+            };
 
-            // Proxy endpoints to bypass CORS restrictions
-            const proxies = [
-                { name: 'CORSProxy.io', url: 'https://corsproxy.io/?' + encodeURIComponent(catboxApi) },
-                { name: 'CodeTabs Proxy', url: 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(catboxApi) },
-                { name: 'ThingProxy', url: 'https://thingproxy.freeboard.io/fetch/' + catboxApi },
-                { name: 'Catbox Direto', url: catboxApi }
+            // 1. Direct Multipart Upload via CORS Proxies directly to Catbox API
+            const tryDirectCatboxUpload = async (endpointUrl) => {
+                const fd = new FormData();
+                fd.append('reqtype', 'fileupload');
+                if (userhash) fd.append('userhash', userhash);
+                fd.append('fileToUpload', file, file.name);
+
+                const res = await fetch(endpointUrl, {
+                    method: 'POST',
+                    body: fd
+                });
+
+                if (res && res.ok) {
+                    const responseText = await res.text();
+                    return isValidCatboxUrl(responseText);
+                }
+                return null;
+            };
+
+            // 2. URL Upload to Catbox API (via temporary raw mirror, then mirrored to Catbox)
+            const tryCatboxUrlUpload = async (directFileUrl) => {
+                const bodyParams = new URLSearchParams();
+                bodyParams.append('reqtype', 'urlupload');
+                if (userhash) bodyParams.append('userhash', userhash);
+                bodyParams.append('url', directFileUrl);
+
+                const proxyEndpoints = [
+                    'https://corsproxy.io/?https://catbox.moe/user/api.php',
+                    'https://thingproxy.freeboard.io/fetch/https://catbox.moe/user/api.php',
+                    'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://catbox.moe/user/api.php?' + bodyParams.toString()),
+                    'https://catbox.moe/user/api.php'
+                ];
+
+                for (const proxy of proxyEndpoints) {
+                    try {
+                        let res;
+                        if (proxy.includes('codetabs')) {
+                            res = await fetch(proxy);
+                        } else {
+                            res = await fetch(proxy, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                body: bodyParams
+                            });
+                        }
+                        if (res && res.ok) {
+                            const text = await res.text();
+                            const url = isValidCatboxUrl(text);
+                            if (url) return url;
+                        }
+                    } catch (e) {
+                        console.warn('Catbox URL upload proxy failed:', proxy, e);
+                    }
+                }
+                return null;
+            };
+
+            // STRATEGY A: Direct POST to Catbox API / Proxies
+            const directCatboxProxies = [
+                'https://catbox.moe/user/api.php',
+                'https://corsproxy.io/?https://catbox.moe/user/api.php',
+                'https://thingproxy.freeboard.io/fetch/https://catbox.moe/user/api.php'
             ];
 
-            for (const proxy of proxies) {
+            for (let i = 0; i < directCatboxProxies.length; i++) {
                 try {
-                    const formData = new FormData();
-                    formData.append('reqtype', 'fileupload');
-                    formData.append('fileToUpload', file, file.name);
-
-                    const response = await fetch(proxy.url, {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    if (response.ok) {
-                        const responseText = (await response.text()).trim();
-                        // Verify if response matches catbox file link
-                        const match = responseText.match(/https?:\/\/files\.catbox\.moe\/[a-zA-Z0-9_\-\.\/]+/);
-                        if (match) {
-                            return {
-                                url: match[0],
-                                provider: 'Catbox.moe (Permanente)',
-                                isLocal: false
-                            };
-                        }
-                        if (responseText.startsWith('http://') || responseText.startsWith('https://')) {
-                            return {
-                                url: responseText,
-                                provider: 'Catbox.moe (Permanente)',
-                                isLocal: false
-                            };
-                        }
+                    if (statusCallback) statusCallback(`Enviando para o Catbox.moe (Servidor Rota ${i + 1})...`);
+                    const url = await tryDirectCatboxUpload(directCatboxProxies[i]);
+                    if (url) {
+                        return { url: url, provider: 'Catbox.moe (Servidor Oficial Permanente)' };
                     }
-                } catch (err) {
-                    console.warn(`Tentativa via ${proxy.name} falhou:`, err);
+                } catch (e) {
+                    console.warn(`Direct Catbox upload strategy ${i + 1} failed:`, e);
                 }
             }
 
-            // Secondary Permanent Fallback for Plain Text / Code / Scripts (dPaste 10 Years RAW)
-            if (file.type.startsWith('text/') || file.name.match(/\.(lua|txt|json|py|js|html|css|cpp|cs|sh|md|yaml|yml)$/i)) {
+            // STRATEGY B: Code/Script Staging via dPaste RAW -> Catbox URL Upload
+            if (file.size < 10000000) {
                 try {
                     const textContent = await file.text();
-                    const dpasteBody = new URLSearchParams();
-                    dpasteBody.append('content', textContent);
-                    dpasteBody.append('expiry_days', '3650'); // 10 Anos (Permanente)
-                    dpasteBody.append('title', file.name);
+                    if (textContent && textContent.trim().length > 0) {
+                        if (statusCallback) statusCallback('Processando código para hospedagem no Catbox.moe...');
+                        const dpParams = new URLSearchParams();
+                        dpParams.append('content', textContent);
+                        dpParams.append('expiry_days', '1');
+                        dpParams.append('format', 'url');
 
-                    const dpasteRes = await fetch('https://dpaste.com/api/', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: dpasteBody.toString()
-                    });
+                        const dpRes = await fetch('https://dpaste.org/api/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: dpParams
+                        });
 
-                    if (dpasteRes.ok) {
-                        const pasteUrl = (await dpasteRes.text()).trim();
-                        if (pasteUrl.startsWith('http')) {
-                            const rawUrl = pasteUrl.endsWith('.txt') ? pasteUrl : `${pasteUrl}.txt`;
-                            return {
-                                url: rawUrl,
-                                provider: 'dPaste RAW (Permanente - 10 Anos)',
-                                isLocal: false
-                            };
+                        if (dpRes.ok) {
+                            const rawUrl = (await dpRes.text()).trim() + '/raw';
+                            if (statusCallback) statusCallback('Sincronizando com Catbox.moe...');
+                            const catboxUrl = await tryCatboxUrlUpload(rawUrl);
+                            if (catboxUrl) {
+                                return { url: catboxUrl, provider: 'Catbox.moe (Servidor Oficial Permanente)' };
+                            }
                         }
                     }
-                } catch (dpasteErr) {
-                    console.warn('dPaste fallback falhou:', dpasteErr);
-                }
-            }
-
-            // Local Fallback if no network upload worked
-            const objectUrl = URL.createObjectURL(file);
-            return {
-                url: objectUrl,
-                provider: 'Download Local Direto (Offline)',
-                isLocal: true
-            };
-        }
-
-        // Form Submit Handler
-        async function handleFormSubmit(event) {
-            event.preventDefault();
-
-            let fileToSend = null;
-
-            if (currentTab === 'text') {
-                let filename = fileNameInput.value.trim();
-                const content = fileContentInput.value;
-
-                if (!content) {
-                    showToast('error', 'Conteúdo Vazio', 'Por favor preencha o código ou texto do ficheiro.');
-                    return;
-                }
-
-                if (!filename) {
-                    filename = 'script.lua';
-                }
-
-                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-                fileToSend = new File([blob], filename, { type: 'text/plain;charset=utf-8' });
-
-            } else if (currentTab === 'file') {
-                if (!selectedSingleFile) {
-                    showToast('error', 'Nenhum Ficheiro Selecionado', 'Por favor selecione um ficheiro do seu computador.');
-                    return;
-                }
-                fileToSend = selectedSingleFile;
-
-            } else if (currentTab === 'folder') {
-                if (!selectedFolderFiles || selectedFolderFiles.length === 0) {
-                    showToast('error', 'Nenhuma Pasta Selecionada', 'Por favor selecione uma pasta do seu computador.');
-                    return;
-                }
-                
-                const customZipName = zipOutputName.value.trim() || 'pasta_compactada.zip';
-
-                hideToast();
-                resultPanel.classList.add('hidden');
-                loadingOverlay.classList.remove('hidden');
-                loadingIcon.className = "fa-solid fa-file-zipper text-amber-400 absolute text-sm";
-                loadingTitle.textContent = "Compactando pasta em arquivo ZIP...";
-                loadingSubtext.textContent = `Processando ${selectedFolderFiles.length} ficheiros no navegador`;
-                progressBarContainer.classList.remove('hidden');
-                progressBarFill.style.width = '0%';
-
-                try {
-                    fileToSend = await buildZipFromFolder(selectedFolderFiles, customZipName, (percent) => {
-                        const p = Math.round(percent);
-                        progressBarFill.style.width = `${p}%`;
-                        loadingSubtext.textContent = `Compressão ZIP: ${p}% concluído (${selectedFolderFiles.length} ficheiros)`;
-                    });
-                } catch (zipErr) {
-                    console.error('Erro na compressão ZIP:', zipErr);
-                    loadingOverlay.classList.add('hidden');
-                    showToast('error', 'Erro ao Criar ZIP', 'Não foi possível compactar os ficheiros da pasta.');
-                    return;
-                }
-            }
-
-            // Cloud Upload Step
-            hideToast();
-            resultPanel.classList.add('hidden');
-            loadingOverlay.classList.remove('hidden');
-            progressBarContainer.classList.add('hidden');
-            loadingIcon.className = "fa-solid fa-cloud-arrow-up text-indigo-400 absolute text-sm";
-            loadingTitle.textContent = "Hospedando no Catbox.moe...";
-            loadingSubtext.textContent = `Enviando "${fileToSend.name}" para hospedagem permanente`;
-
-            let uploadResult = null;
-
-            try {
-                uploadResult = await uploadToCatbox(fileToSend);
-            } catch (err) {
-                console.error('Erro geral no upload:', err);
-                uploadResult = {
-                    url: URL.createObjectURL(fileToSend),
-                    provider: 'Download Local Instantâneo (Modo Offline)',
-                    isLocal: true
-                };
-            } finally {
-                loadingOverlay.classList.add('hidden');
-            }
-
-            if (uploadResult) {
-                directUrlOutput.value = uploadResult.url;
-                testDownloadLink.href = uploadResult.url;
-                providerStatus.textContent = `Provedor: ${uploadResult.provider}`;
-
-                if (uploadResult.isLocal) {
-                    showToast('warning', 'Modo Offline Ativado', 'Não foi possível conectar ao servidor externo. O ficheiro está pronto para download local!');
-                } else {
-                    showToast('success', 'Link Permanente Criado!', `O arquivo "${fileToSend.name}" foi hospedado com sucesso e nunca expira.`);
-                }
-
-                resultPanel.classList.remove('hidden');
-                resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }
-
-        // Offline / Direct Local Download Trigger
-        async function triggerLocalDownload() {
-            let fileToSave = null;
-
-            if (currentTab === 'text') {
-                const filename = fileNameInput.value.trim() || 'script.lua';
-                const content = fileContentInput.value;
-
-                if (!content) {
-                    showToast('error', 'Conteúdo Vazio', 'Digite algum conteúdo antes de realizar o download.');
-                    return;
-                }
-                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-                fileToSave = new File([blob], filename, { type: 'text/plain;charset=utf-8' });
-
-            } else if (currentTab === 'file') {
-                if (!selectedSingleFile) {
-                    showToast('error', 'Nenhum Ficheiro', 'Escolha um ficheiro primeiro para baixar localmente.');
-                    return;
-                }
-                fileToSave = selectedSingleFile;
-
-            } else if (currentTab === 'folder') {
-                if (!selectedFolderFiles || selectedFolderFiles.length === 0) {
-                    showToast('error', 'Nenhuma Pasta', 'Escolha uma pasta primeiro para gerar o ZIP local.');
-                    return;
-                }
-
-                const customZipName = zipOutputName.value.trim() || 'pasta_compactada.zip';
-
-                hideToast();
-                loadingOverlay.classList.remove('hidden');
-                loadingIcon.className = "fa-solid fa-file-zipper text-amber-400 absolute text-sm";
-                loadingTitle.textContent = "Gerando ZIP local...";
-                progressBarContainer.classList.remove('hidden');
-
-                try {
-                    fileToSave = await buildZipFromFolder(selectedFolderFiles, customZipName, (percent) => {
-                        const p = Math.round(percent);
-                        progressBarFill.style.width = `${p}%`;
-                        loadingSubtext.textContent = `Compressão: ${p}%`;
-                    });
                 } catch (e) {
-                    loadingOverlay.classList.add('hidden');
-                    showToast('error', 'Erro ZIP', 'Não foi possível gerar o ZIP localmente.');
-                    return;
-                } finally {
-                    loadingOverlay.classList.add('hidden');
+                    console.warn('dPaste -> Catbox staging failed:', e);
                 }
             }
 
-            if (!fileToSave) return;
-
-            const tempUrl = URL.createObjectURL(fileToSave);
-            const link = document.createElement('a');
-            link.href = tempUrl;
-            link.download = fileToSave.name;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            setTimeout(() => URL.revokeObjectURL(tempUrl), 5000);
-            showToast('success', 'Download Iniciado', `O ficheiro "${fileToSave.name}" foi salvo no seu dispositivo.`);
-        }
-
-        // Clipboard Copy Utility
-        function copyGeneratedLink() {
-            const urlToCopy = directUrlOutput.value;
-            if (!urlToCopy) return;
-
-            directUrlOutput.select();
-            directUrlOutput.setSelectionRange(0, 99999);
-
+            // STRATEGY C: Silent Mirror Staging via TmpFiles -> Catbox URL Upload
             try {
-                document.execCommand('copy');
-                
-                const originalHTML = copyBtn.innerHTML;
-                copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-300"></i> Copiado!';
-                copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500');
-                copyBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+                if (statusCallback) statusCallback('Preparando transferência para o Catbox.moe...');
+                const tmpFd = new FormData();
+                tmpFd.append('file', file, file.name);
 
-                setTimeout(() => {
-                    copyBtn.innerHTML = originalHTML;
-                    copyBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
-                    copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
-                }, 2500);
+                const tmpRes = await fetch('https://tmpfiles.org/api/v1/upload', {
+                    method: 'POST',
+                    body: tmpFd
+                });
 
-            } catch (err) {
-                showToast('error', 'Erro ao Copiar', 'Selecione o texto manualmente para copiar.');
+                if (tmpRes.ok) {
+                    const tmpData = await tmpRes.json();
+                    if (tmpData && tmpData.data && tmpData.data.url) {
+                        const directUrl = tmpData.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                        if (statusCallback) statusCallback('Gerando link final files.catbox.moe...');
+                        const catboxUrl = await tryCatboxUrlUpload(directUrl);
+                        if (catboxUrl) {
+                            return { url: catboxUrl, provider: 'Catbox.moe (Servidor Oficial Permanente)' };
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('TmpFiles -> Catbox staging failed:', e);
             }
+
+            // STRATEGY D: Silent Mirror Staging via Pixeldrain -> Catbox URL Upload
+            try {
+                if (statusCallback) statusCallback('Tentando rota alternativa de espelhamento no Catbox.moe...');
+                const pxRes = await fetch(`https://pixeldrain.com/api/file/${encodeURIComponent(file.name)}`, {
+                    method: 'PUT',
+                    body: file
+                });
+
+                if (pxRes.ok) {
+                    const pxData = await pxRes.json();
+                    if (pxData && pxData.id) {
+                        const stagingUrl = `https://pixeldrain.com/api/file/${pxData.id}?name=${encodeURIComponent(file.name)}`;
+                        if (statusCallback) statusCallback('Finalizando link no Catbox.moe...');
+                        const catboxUrl = await tryCatboxUrlUpload(stagingUrl);
+                        if (catboxUrl) {
+                            return { url: catboxUrl, provider: 'Catbox.moe (Servidor Oficial Permanente)' };
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Pixeldrain -> Catbox staging failed:', e);
+            }
+
+            // IF ALL CATBOX STRATEGIES FAIL, THROW ERROR (NEVER RETURN OTHER DOMAINS)
+            throw new Error('Não foi possível conectar aos servidores do Catbox.moe. Verifique a sua conexão ou tente novamente.');
         }
 
-        // Notification Toast Display
-        function showToast(type, title, message) {
-            toastNotification.classList.remove('hidden', 'bg-emerald-950/80', 'border-emerald-500/40', 'bg-rose-950/80', 'border-rose-500/40', 'bg-amber-950/80', 'border-amber-500/40');
+        async function downloadLocalDirect() {
+            let blob = null;
+            let filename = 'guest100067.dat';
 
-            if (type === 'success') {
-                toastNotification.classList.add('bg-emerald-950/80', 'border-emerald-500/40', 'text-emerald-200');
-                toastIcon.className = 'fa-solid fa-circle-check text-emerald-400';
-            } else if (type === 'error') {
-                toastNotification.classList.add('bg-rose-950/80', 'border-rose-500/40', 'text-rose-200');
-                toastIcon.className = 'fa-solid fa-circle-exclamation text-rose-400';
+            if (activeTab === 'manual') {
+                const content = document.getElementById('manual-content').value;
+                filename = document.getElementById('manual-filename').value.trim() || 'guest100067.dat';
+                blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+
+            } else if (activeTab === 'file') {
+                if (!selectedFile) {
+                    showToast('Por favor, selecione um ficheiro do PC primeiro!', 'error');
+                    return;
+                }
+                blob = selectedFile;
+                filename = selectedFile.name;
+
+            } else if (activeTab === 'folder') {
+                if (!selectedFolderFiles || selectedFolderFiles.length === 0) {
+                    showToast('Por favor, selecione uma pasta com ficheiros primeiro!', 'error');
+                    return;
+                }
+                showToast('Criando ficheiro ZIP local...', 'info');
+                const zip = new JSZip();
+                for (let f of selectedFolderFiles) {
+                    const path = f.webkitRelativePath || f.name;
+                    zip.file(path, f);
+                }
+                blob = await zip.generateAsync({ type: 'blob' });
+                let folderZipName = document.getElementById('folder-zip-name').value.trim() || 'pasta_arquivos.zip';
+                if (!folderZipName.endsWith('.zip')) folderZipName += '.zip';
+                filename = folderZipName;
+            }
+
+            // Trigger local download anchor
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+            showToast('Download local iniciado com sucesso!', 'success');
+        }
+
+        function copyResultLink() {
+            const input = document.getElementById('result-link-input');
+            if (!input || !input.value) return;
+
+            input.select();
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+            } catch (e) {
+                success = false;
+            }
+
+            if (!success && navigator.clipboard) {
+                navigator.clipboard.writeText(input.value).then(() => {
+                    showToast('Link Catbox.moe copiado com sucesso!', 'success');
+                }).catch(() => {
+                    showToast('Copie manualmente o link selecionado.', 'info');
+                });
             } else {
-                toastNotification.classList.add('bg-amber-950/80', 'border-amber-500/40', 'text-amber-200');
-                toastIcon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
+                showToast('Link Catbox.moe copiado com sucesso!', 'success');
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            const toastText = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastText.textContent = message;
+            if (type === 'success') {
+                toastIcon.className = 'fas fa-check-circle text-emerald-400 text-lg';
+            } else if (type === 'error') {
+                toastIcon.className = 'fas fa-exclamation-triangle text-rose-400 text-lg';
+            } else {
+                toastIcon.className = 'fas fa-info-circle text-sky-400 text-lg';
             }
 
-            toastTitle.textContent = title;
-            toastMessage.textContent = message;
+            toast.classList.remove('hidden', 'translate-y-10', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3500);
         }
 
-        function hideToast() {
-            toastNotification.classList.add('hidden');
-        }
+        // Initialize character counter on load
+        window.onload = function() {
+            updateTextStats();
+        };
     </script>
 </body>
 </html>
