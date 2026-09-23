@@ -90,7 +90,7 @@
                             100% CATBOX.MOE
                         </span>
                     </div>
-                    <p class="text-xs text-slate-400">Gerador Exclusivo de Links Permanentes Catbox.moe</p>
+                    <p class="text-xs text-slate-400">Gerador de Links Catbox.moe</p>
                 </div>
             </div>
 
@@ -113,13 +113,13 @@
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
-                        <h1 class="text-xl sm:text-2xl font-bold text-white">Hospedar Conteúdo no Catbox</h1>
+                        <h1 class="text-xl sm:text-2xl font-bold text-white">Hospedar Conteúdo e Gerar Link</h1>
                         <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                             Apenas files.catbox.moe
                         </span>
                     </div>
                     <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl">
-                        Envie texto/código, ficheiros ou pastas. O link resultante é <strong class="text-emerald-400">garantidamente gerado no Catbox.moe</strong> com a extensão exata (ex: <code class="text-violet-300">.dat</code>, <code class="text-violet-300">.lua</code>, <code class="text-violet-300">.zip</code>).
+                        Envie texto/código, ficheiros ou pastas. O link resultante é <strong class="text-emerald-400">gerado no Catbox.moe através do servidor seguro do site</strong> com a extensão exata (ex: <code class="text-violet-300">.dat</code>, <code class="text-violet-300">.lua</code>, <code class="text-violet-300">.zip</code>).
                     </p>
                 </div>
                 
@@ -296,12 +296,17 @@
             </div>
         </div>
 
+        <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3 text-xs text-amber-200/90 flex items-start gap-2">
+            <i class="fas fa-circle-info text-amber-400 mt-0.5"></i>
+            <span>O botão Catbox usa uma rota de servidor para evitar bloqueios de CORS. Em hospedagens serverless, arquivos muito grandes podem atingir o limite da hospedagem; para textos, scripts e arquivos pequenos funciona normalmente.</span>
+        </div>
+
         <!-- Main Action Buttons -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <button id="btn-generate-link" onclick="executeUploadProcess()" 
                     class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-violet-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg shadow-violet-900/40 transition-all duration-200 transform hover:scale-[1.01] active:scale-95 glow-effect">
                 <i class="fas fa-infinity text-lg"></i>
-                <span>Gerar Link Exclusivo Catbox.moe</span>
+                <span>Gerar Link Catbox</span>
             </button>
 
             <button onclick="downloadLocalDirect()" 
@@ -315,7 +320,7 @@
         <div id="upload-status-indicator" class="hidden p-4 bg-slate-900/90 border border-violet-500/40 rounded-2xl flex items-center gap-3 animate-pulse">
             <div class="w-6 h-6 border-2 border-violet-400 border-t-transparent rounded-full animate-spin"></div>
             <div class="text-xs sm:text-sm text-slate-200 font-medium" id="upload-status-text">
-                Enviando diretamente para Catbox.moe...
+                Preparando upload para o Catbox.moe...
             </div>
         </div>
 
@@ -328,14 +333,14 @@
                         <i class="fas fa-check text-base"></i>
                     </div>
                     <div>
-                        <h3 class="text-base font-bold text-white">Link Catbox Gerado com Sucesso!</h3>
+                        <h3 class="text-base font-bold text-white">Link Catbox Gerado!</h3>
                         <p id="result-provider-tag" class="text-xs text-emerald-400 font-medium">Servidor Oficial: files.catbox.moe</p>
                     </div>
                 </div>
 
                 <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5">
                     <i class="fas fa-infinity text-xs"></i>
-                    Catbox Permanente
+                    Link Catbox
                 </span>
             </div>
 
@@ -377,7 +382,7 @@
                     <span>Garantia de Link Catbox.moe</span>
                 </div>
                 <p class="text-xs text-slate-400 leading-relaxed">
-                    Todos os links gerados são finalizados estritamente no domínio <strong class="text-emerald-400">files.catbox.moe</strong>. Se o serviço do Catbox falhar, o sistema exibirá um aviso em vez de gerar links temporários em outros sites.
+                    O upload é enviado pelo servidor do site para a API oficial do Catbox. Se o Catbox falhar, o sistema mostra o erro em vez de inventar ou trocar por outro provedor.
                 </p>
             </div>
 
@@ -405,8 +410,8 @@
     <!-- Footer -->
     <footer class="w-full border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
         <div class="max-w-4xl mx-auto px-4 space-y-2">
-            <p>FileForge Direct &bull; Hospedagem Permanente Exclusiva Catbox.moe</p>
-            <p class="text-[11px] text-slate-600">Catbox Direct Integration &bull; Todos os direitos reservados</p>
+            <p>FileForge Direct &bull; Integração Catbox.moe</p>
+            <p class="text-[11px] text-slate-600">Catbox API &bull; Todos os direitos reservados</p>
         </div>
     </footer>
 
@@ -574,6 +579,7 @@
                 }, userhash);
 
                 // Display result box
+                document.getElementById('result-box').classList.add('hidden');
                 document.getElementById('result-link-input').value = uploadResult.url;
                 document.getElementById('result-test-link').href = uploadResult.url;
                 document.getElementById('result-provider-tag').textContent = `Provedor: ${uploadResult.provider}`;
@@ -581,7 +587,7 @@
                 resultBox.classList.remove('hidden');
                 resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-                showToast('Link permanente gerado no Catbox.moe com sucesso!', 'success');
+                showToast('Link Catbox gerado com sucesso!', 'success');
 
             } catch (err) {
                 console.error(err);
@@ -593,173 +599,42 @@
             }
         }
 
-        // Upload Engine that GUARANTEES files.catbox.moe output or fails cleanly
+        // Upload via our own serverless endpoint.
+        // This avoids browser CORS problems with Catbox's API.
         async function uploadToCatboxExclusive(file, statusCallback, userhash = '') {
-            const isValidCatboxUrl = (text) => {
-                if (!text) return null;
-                const match = text.match(/https?:\/\/(files|litter)\.catbox\.moe\/[a-zA-Z0-9.\-_]+/);
-                if (match) return match[0].trim();
-                return null;
-            };
+            if (!file) throw new Error('Nenhum arquivo foi preparado para envio.');
 
-            // 1. Direct Multipart Upload via CORS Proxies directly to Catbox API
-            const tryDirectCatboxUpload = async (endpointUrl) => {
-                const fd = new FormData();
-                fd.append('reqtype', 'fileupload');
-                if (userhash) fd.append('userhash', userhash);
-                fd.append('fileToUpload', file, file.name);
+            statusCallback?.('Enviando arquivo para o servidor...');
 
-                const res = await fetch(endpointUrl, {
-                    method: 'POST',
-                    body: fd
-                });
+            const form = new FormData();
+            form.append('file', file, file.name);
+            if (userhash) form.append('userhash', userhash);
 
-                if (res && res.ok) {
-                    const responseText = await res.text();
-                    return isValidCatboxUrl(responseText);
-                }
-                return null;
-            };
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: form
+            });
 
-            // 2. URL Upload to Catbox API (via temporary raw mirror, then mirrored to Catbox)
-            const tryCatboxUrlUpload = async (directFileUrl) => {
-                const bodyParams = new URLSearchParams();
-                bodyParams.append('reqtype', 'urlupload');
-                if (userhash) bodyParams.append('userhash', userhash);
-                bodyParams.append('url', directFileUrl);
-
-                const proxyEndpoints = [
-                    'https://corsproxy.io/?https://catbox.moe/user/api.php',
-                    'https://thingproxy.freeboard.io/fetch/https://catbox.moe/user/api.php',
-                    'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://catbox.moe/user/api.php?' + bodyParams.toString()),
-                    'https://catbox.moe/user/api.php'
-                ];
-
-                for (const proxy of proxyEndpoints) {
-                    try {
-                        let res;
-                        if (proxy.includes('codetabs')) {
-                            res = await fetch(proxy);
-                        } else {
-                            res = await fetch(proxy, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                body: bodyParams
-                            });
-                        }
-                        if (res && res.ok) {
-                            const text = await res.text();
-                            const url = isValidCatboxUrl(text);
-                            if (url) return url;
-                        }
-                    } catch (e) {
-                        console.warn('Catbox URL upload proxy failed:', proxy, e);
-                    }
-                }
-                return null;
-            };
-
-            // STRATEGY A: Direct POST to Catbox API / Proxies
-            const directCatboxProxies = [
-                'https://catbox.moe/user/api.php',
-                'https://corsproxy.io/?https://catbox.moe/user/api.php',
-                'https://thingproxy.freeboard.io/fetch/https://catbox.moe/user/api.php'
-            ];
-
-            for (let i = 0; i < directCatboxProxies.length; i++) {
-                try {
-                    if (statusCallback) statusCallback(`Enviando para o Catbox.moe (Servidor Rota ${i + 1})...`);
-                    const url = await tryDirectCatboxUpload(directCatboxProxies[i]);
-                    if (url) {
-                        return { url: url, provider: 'Catbox.moe (Servidor Oficial Permanente)' };
-                    }
-                } catch (e) {
-                    console.warn(`Direct Catbox upload strategy ${i + 1} failed:`, e);
-                }
-            }
-
-            // STRATEGY B: Code/Script Staging via dPaste RAW -> Catbox URL Upload
-            if (file.size < 10000000) {
-                try {
-                    const textContent = await file.text();
-                    if (textContent && textContent.trim().length > 0) {
-                        if (statusCallback) statusCallback('Processando código para hospedagem no Catbox.moe...');
-                        const dpParams = new URLSearchParams();
-                        dpParams.append('content', textContent);
-                        dpParams.append('expiry_days', '1');
-                        dpParams.append('format', 'url');
-
-                        const dpRes = await fetch('https://dpaste.org/api/', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: dpParams
-                        });
-
-                        if (dpRes.ok) {
-                            const rawUrl = (await dpRes.text()).trim() + '/raw';
-                            if (statusCallback) statusCallback('Sincronizando com Catbox.moe...');
-                            const catboxUrl = await tryCatboxUrlUpload(rawUrl);
-                            if (catboxUrl) {
-                                return { url: catboxUrl, provider: 'Catbox.moe (Servidor Oficial Permanente)' };
-                            }
-                        }
-                    }
-                } catch (e) {
-                    console.warn('dPaste -> Catbox staging failed:', e);
-                }
-            }
-
-            // STRATEGY C: Silent Mirror Staging via TmpFiles -> Catbox URL Upload
+            let data = null;
             try {
-                if (statusCallback) statusCallback('Preparando transferência para o Catbox.moe...');
-                const tmpFd = new FormData();
-                tmpFd.append('file', file, file.name);
-
-                const tmpRes = await fetch('https://tmpfiles.org/api/v1/upload', {
-                    method: 'POST',
-                    body: tmpFd
-                });
-
-                if (tmpRes.ok) {
-                    const tmpData = await tmpRes.json();
-                    if (tmpData && tmpData.data && tmpData.data.url) {
-                        const directUrl = tmpData.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-                        if (statusCallback) statusCallback('Gerando link final files.catbox.moe...');
-                        const catboxUrl = await tryCatboxUrlUpload(directUrl);
-                        if (catboxUrl) {
-                            return { url: catboxUrl, provider: 'Catbox.moe (Servidor Oficial Permanente)' };
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn('TmpFiles -> Catbox staging failed:', e);
+                data = await response.json();
+            } catch {
+                throw new Error(`O servidor respondeu de forma inválida (HTTP ${response.status}).`);
             }
 
-            // STRATEGY D: Silent Mirror Staging via Pixeldrain -> Catbox URL Upload
-            try {
-                if (statusCallback) statusCallback('Tentando rota alternativa de espelhamento no Catbox.moe...');
-                const pxRes = await fetch(`https://pixeldrain.com/api/file/${encodeURIComponent(file.name)}`, {
-                    method: 'PUT',
-                    body: file
-                });
-
-                if (pxRes.ok) {
-                    const pxData = await pxRes.json();
-                    if (pxData && pxData.id) {
-                        const stagingUrl = `https://pixeldrain.com/api/file/${pxData.id}?name=${encodeURIComponent(file.name)}`;
-                        if (statusCallback) statusCallback('Finalizando link no Catbox.moe...');
-                        const catboxUrl = await tryCatboxUrlUpload(stagingUrl);
-                        if (catboxUrl) {
-                            return { url: catboxUrl, provider: 'Catbox.moe (Servidor Oficial Permanente)' };
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn('Pixeldrain -> Catbox staging failed:', e);
+            if (!response.ok || !data?.success || !data?.url) {
+                throw new Error(data?.error || `Falha no upload (HTTP ${response.status}).`);
             }
 
-            // IF ALL CATBOX STRATEGIES FAIL, THROW ERROR (NEVER RETURN OTHER DOMAINS)
-            throw new Error('Não foi possível conectar aos servidores do Catbox.moe. Verifique a sua conexão ou tente novamente.');
+            if (!/^https:\/\/(?:files|litter)\.catbox\.moe\/[A-Za-z0-9._-]+$/.test(data.url)) {
+                throw new Error('O servidor não retornou um link Catbox válido.');
+            }
+
+            statusCallback?.('Link Catbox gerado com sucesso!');
+            return {
+                url: data.url,
+                provider: 'Catbox.moe'
+            };
         }
 
         async function downloadLocalDirect() {
