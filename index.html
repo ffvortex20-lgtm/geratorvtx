@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Arquivos Simples</title>
+    <!-- Tailwind CSS para estilização rápida e moderna -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-file-code text-indigo-400"></i> Gerador & Downloader de Arquivos
+            </h1>
+            <a href="https://github.com" target="_blank" class="text-slate-400 hover:text-white transition text-sm flex items-center gap-1.5 bg-slate-700/50 px-3 py-1.5 rounded-lg border border-slate-600">
+                <i class="fa-brands fa-github"></i> GitHub Pages
+            </a>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-4xl mx-auto w-full p-4 md:p-6 my-auto">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-6 md:p-8">
+            <p class="text-slate-400 text-sm mb-6">
+                Digite o nome desejado para o arquivo (com a extensão correta, ex: <code class="bg-slate-900 text-indigo-300 px-1.5 py-0.5 rounded">script.py</code>, <code class="bg-slate-900 text-indigo-300 px-1.5 py-0.5 rounded">index.html</code>, <code class="bg-slate-900 text-indigo-300 px-1.5 py-0.5 rounded">notas.txt</code>) e cole o conteúdo abaixo.
+            </p>
+
+            <form id="fileForm" class="space-y-5">
+                <!-- Nome do Arquivo -->
+                <div>
+                    <label for="fileName" class="block text-sm font-medium text-slate-300 mb-1.5">
+                        Nome do Arquivo com Extensão
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-500">
+                            <i class="fa-solid fa-file-pen"></i>
+                        </span>
+                        <input type="text" id="fileName" required placeholder="ex: meu-codigo.js" 
+                            class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <!-- Conteúdo do Arquivo -->
+                <div>
+                    <label for="fileContent" class="block text-sm font-medium text-slate-300 mb-1.5">
+                        Conteúdo do Arquivo
+                    </label>
+                    <textarea id="fileContent" rows="10" required placeholder="Cole ou digite o conteúdo do seu arquivo aqui..."
+                        class="w-full p-4 bg-slate-900 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"></textarea>
+                </div>
+
+                <!-- Botão de Ação -->
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 px-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-download"></i> Gerar e Baixar Arquivo
+                </button>
+            </form>
+
+            <!-- Área de Sucesso / Link Gerado Dinamicamente -->
+            <div id="resultArea" class="hidden mt-6 p-4 bg-slate-900/80 border border-emerald-500/30 rounded-xl flex items-center justify-between animate-fade-in">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <div class="bg-emerald-500/10 text-emerald-400 p-2.5 rounded-lg">
+                        <i class="fa-solid fa-check text-lg"></i>
+                    </div>
+                    <div class="truncate">
+                        <p class="text-xs text-slate-400">Arquivo gerado com sucesso!</p>
+                        <p id="savedFileName" class="text-sm font-medium text-emerald-300 truncate"></p>
+                    </div>
+                </div>
+                <a id="downloadLink" download class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2 px-4 rounded-lg transition flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> Baixar Novamente
+                </a>
+            </div>
+        </div>
+
+        <!-- Instruções para colocar no GitHub / GitHub Pages -->
+        <div class="mt-8 bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 text-sm text-slate-400">
+            <h2 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-circle-info text-indigo-400"></i> Como publicar isso de graça no GitHub Pages?
+            </h2>
+            <ol class="list-decimal list-inside space-y-1.5">
+                <li>Crie um repositório público no GitHub (ex: <code class="text-indigo-300">gerador-arquivos</code>).</li>
+                <li>Salve este código em um arquivo chamado <code class="text-indigo-300">index.html</code>.</li>
+                <li>Faça o upload ou envie (<code class="text-indigo-300">git push</code>) para a branch principal (<code class="text-indigo-300">main</code>) do seu repositório.</li>
+                <li>Vá nas configurações do repositório (<code class="text-indigo-300">Settings</code>) &gt; <code class="text-indigo-300">Pages</code> e ative o Deploy a partir da branch <code class="text-indigo-300">main</code>. Pronto!</li>
+            </ol>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-800">
+        Criado com HTML5, Tailwind CSS e JavaScript Vanilla.
+    </footer>
+
+    <!-- Script de Geração de Arquivo -->
+    <script>
+        const fileForm = document.getElementById('fileForm');
+        const fileNameInput = document.getElementById('fileName');
+        const fileContentInput = document.getElementById('fileContent');
+        const resultArea = document.getElementById('resultArea');
+        const savedFileName = document.getElementById('savedFileName');
+        const downloadLink = document.getElementById('downloadLink');
+
+        let currentUrl = null;
+
+        fileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const filename = fileNameInput.value.trim();
+            const content = fileContentInput.value;
+
+            // Cria um Blob com o conteúdo fornecido
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+
+            // Se já houver uma URL criada anteriormente, libera memória
+            if (currentUrl) {
+                URL.revokeObjectURL(currentUrl);
+            }
+
+            // Gera uma URL temporária para o Blob
+            currentUrl = URL.createObjectURL(blob);
+
+            // Configura o link de download
+            downloadLink.href = currentUrl;
+            downloadLink.download = filename;
+            savedFileName.textContent = filename;
+
+            // Exibe a área de sucesso
+            resultArea.classList.remove('hidden');
+
+            // Dispara o download automaticamente
+            downloadLink.click();
+        });
+    </script>
+</body>
+</html>
