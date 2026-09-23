@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Arquivos & Cloud Direct Link</title>
+    <title>FileForge Direct - Gerador de Arquivos & Cloud Direct Link</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,7 +14,7 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#eep2ff',
+                            50: '#eef2ff',
                             500: '#6366f1',
                             600: '#4f46e5',
                             700: '#4338ca',
@@ -28,10 +28,13 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts Inter -->
+    <!-- Google Fonts Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- JSZip Library for Folder Compression -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <style>
         body {
@@ -40,26 +43,29 @@
         .font-mono-code {
             font-family: 'JetBrains Mono', monospace;
         }
-        /* Custom Scrollbar for Textarea */
-        textarea::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        textarea::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        textarea::-webkit-scrollbar-track {
+        textarea::-webkit-scrollbar-track, .custom-scrollbar::-webkit-scrollbar-track {
             background: #0f172a;
         }
-        textarea::-webkit-scrollbar-thumb {
+        textarea::-webkit-scrollbar-thumb, .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #334155;
             border-radius: 4px;
         }
-        textarea::-webkit-scrollbar-thumb:hover {
+        textarea::-webkit-scrollbar-thumb:hover, .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #475569;
+        }
+        .dropzone-active {
+            border-color: #6366f1 !important;
+            background-color: rgba(99, 102, 241, 0.08) !important;
         }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
 
-    <!-- Header -->
+    <!-- Header Navigation -->
     <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 py-4 px-4 md:px-8 shadow-xl">
         <div class="max-w-5xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -69,9 +75,9 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="text-base md:text-lg font-bold tracking-tight text-white">FileForge Direct</h1>
-                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">CORS Fix</span>
+                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">ZIP & CORS Ready</span>
                     </div>
-                    <p class="text-xs text-slate-400 hidden sm:block">Gerador de Arquivos com Download Direto para GitHub Pages</p>
+                    <p class="text-xs text-slate-400 hidden sm:block">Gerador de Links Diretos para Textos, Ficheiros e Pastas (ZIP Auto)</p>
                 </div>
             </div>
             
@@ -101,57 +107,174 @@
 
         <!-- Main Form Card -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-5 md:p-8 relative overflow-hidden">
-            <!-- Decorative Subtle Blur -->
+            <!-- Decorative Background Blurs -->
             <div class="absolute -top-24 -right-24 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="mb-6">
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-1.5 flex items-center gap-2">
-                    <span>Criar Novo Ficheiro / Arquivo</span>
+                    <span>Criar Link / Hospedar Conteúdo</span>
                 </h2>
                 <p class="text-slate-400 text-xs md:text-sm leading-relaxed">
-                    Escreva ou cole o conteúdo do seu arquivo abaixo. O sistema converterá automaticamente o envio para um link com cabeçalho de download forçado (<code class="text-indigo-300 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">/dl/</code>) via API compatível com CORS.
+                    Escolha a origem do ficheiro: digite o conteúdo manualmente, escolha um ficheiro do PC ou envie uma pasta completa (o sistema criará um <code class="text-indigo-300 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">.zip</code> automaticamente).
                 </p>
             </div>
 
+            <!-- TAB NAVIGATION -->
+            <div class="flex items-center gap-2 border-b border-slate-800 mb-6 pb-3 overflow-x-auto">
+                <button type="button" onclick="switchTab('text')" id="tabBtnText" 
+                    class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Texto / Editor Manual</span>
+                </button>
+                <button type="button" onclick="switchTab('file')" id="tabBtnFile" 
+                    class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-slate-800 hover:bg-slate-700 text-slate-300">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    <span>Ficheiro do PC</span>
+                </button>
+                <button type="button" onclick="switchTab('folder')" id="tabBtnFolder" 
+                    class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-slate-800 hover:bg-slate-700 text-slate-300">
+                    <i class="fa-solid fa-folder-plus text-amber-400"></i>
+                    <span>Pasta do PC (Auto ZIP)</span>
+                </button>
+            </div>
+
             <form id="fileForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
-                <!-- File Name Input & Presets -->
-                <div>
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                        <label for="fileName" class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                            <i class="fa-solid fa-file-signature text-indigo-400"></i> Nome do Ficheiro & Extensão
-                        </label>
-                        <!-- Presets Quick Buttons -->
-                        <div class="flex items-center gap-1.5 flex-wrap">
-                            <span class="text-[11px] text-slate-400 mr-1">Extensões rápidas:</span>
-                            <button type="button" onclick="setExtension('.json')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.json</button>
-                            <button type="button" onclick="setExtension('.txt')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.txt</button>
-                            <button type="button" onclick="setExtension('.lua')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.lua</button>
-                            <button type="button" onclick="setExtension('.py')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.py</button>
-                            <button type="button" onclick="setExtension('.html')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.html</button>
+                
+                <!-- SECTION 1: MANUAL TEXT EDITOR -->
+                <div id="tabContentText" class="tab-content space-y-6">
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                            <label for="fileName" class="text-sm font-medium text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-file-signature text-indigo-400"></i> Nome do Ficheiro & Extensão
+                            </label>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="text-[11px] text-slate-400 mr-1">Extensões rápidas:</span>
+                                <button type="button" onclick="setExtension('.json')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.json</button>
+                                <button type="button" onclick="setExtension('.txt')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.txt</button>
+                                <button type="button" onclick="setExtension('.lua')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.lua</button>
+                                <button type="button" onclick="setExtension('.py')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.py</button>
+                                <button type="button" onclick="setExtension('.html')" class="text-[11px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-lg transition font-mono">.html</button>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-500">
+                                <i class="fa-solid fa-code"></i>
+                            </span>
+                            <input type="text" id="fileName" placeholder="ex: config.json ou meu_script.lua" 
+                                class="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm font-mono">
                         </div>
                     </div>
 
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-500">
-                            <i class="fa-solid fa-code"></i>
-                        </span>
-                        <input type="text" id="fileName" required placeholder="ex: config.json ou meu_script.lua" 
-                            class="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm font-mono">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label for="fileContent" class="text-sm font-medium text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-align-left text-indigo-400"></i> Conteúdo do Ficheiro
+                            </label>
+                            <span id="charCount" class="text-[11px] font-mono text-slate-500">0 caracteres | 0 linhas</span>
+                        </div>
+
+                        <textarea id="fileContent" rows="8" oninput="updateCharCount()" placeholder="Cole ou digite aqui o seu código, texto, JSON ou script LUA..."
+                            class="w-full p-4 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 font-mono-code text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-y leading-relaxed"></textarea>
                     </div>
                 </div>
 
-                <!-- Textarea for Content -->
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <label for="fileContent" class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                            <i class="fa-solid fa-align-left text-indigo-400"></i> Conteúdo do Arquivo
-                        </label>
-                        <span id="charCount" class="text-[11px] font-mono text-slate-500">0 caracteres | 0 linhas</span>
+                <!-- SECTION 2: FILE UPLOAD FROM PC -->
+                <div id="tabContentFile" class="tab-content hidden space-y-4">
+                    <label class="text-sm font-medium text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-file-arrow-up text-indigo-400"></i> Selecionar Ficheiro do Computador
+                    </label>
+
+                    <div id="singleFileDropzone" onclick="document.getElementById('singleFileInput').click()" 
+                         class="border-2 border-dashed border-slate-800 hover:border-indigo-500/60 bg-slate-950 hover:bg-slate-950/70 rounded-2xl p-8 text-center cursor-pointer transition flex flex-col items-center justify-center gap-3 group">
+                        <div class="w-14 h-14 bg-indigo-500/10 text-indigo-400 group-hover:scale-110 rounded-2xl flex items-center justify-center transition shadow-lg shadow-indigo-500/10">
+                            <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-200">Clique para selecionar ou arraste um ficheiro aqui</p>
+                            <p class="text-xs text-slate-500 mt-1">Suporta qualquer extensão (.zip, .exe, .png, .pdf, .json, etc.)</p>
+                        </div>
+                        <input type="file" id="singleFileInput" onchange="handleSingleFileSelected(event)" class="hidden">
                     </div>
 
-                    <textarea id="fileContent" rows="10" required oninput="updateCharCount()" placeholder="Cole ou digite aqui seu texto, código JSON, Script LUA ou configuração..."
-                        class="w-full p-4 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 font-mono-code text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-y leading-relaxed"></textarea>
+                    <!-- Selected Single File Box -->
+                    <div id="singleFileInfo" class="hidden p-4 bg-slate-950 border border-indigo-500/30 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center gap-3 overflow-hidden">
+                            <div class="bg-indigo-500/10 text-indigo-400 p-3 rounded-xl border border-indigo-500/20">
+                                <i class="fa-solid fa-file text-lg"></i>
+                            </div>
+                            <div class="truncate">
+                                <p id="singleFileNameText" class="text-sm font-semibold text-slate-200 truncate"></p>
+                                <p id="singleFileSizeText" class="text-xs text-slate-400 font-mono"></p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="clearSingleFile()" class="text-slate-400 hover:text-rose-400 p-2 text-sm transition">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: FOLDER UPLOAD FROM PC (ZIP) -->
+                <div id="tabContentFolder" class="tab-content hidden space-y-4">
+                    <label class="text-sm font-medium text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-folder-open text-amber-400"></i> Selecionar Pasta Completa
+                    </label>
+
+                    <div id="folderDropzone" onclick="document.getElementById('folderInput').click()" 
+                         class="border-2 border-dashed border-slate-800 hover:border-amber-500/60 bg-slate-950 hover:bg-slate-950/70 rounded-2xl p-8 text-center cursor-pointer transition flex flex-col items-center justify-center gap-3 group">
+                        <div class="w-14 h-14 bg-amber-500/10 text-amber-400 group-hover:scale-110 rounded-2xl flex items-center justify-center transition shadow-lg shadow-amber-500/10">
+                            <i class="fa-solid fa-folder-plus text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-200">Clique para selecionar uma pasta do seu computador</p>
+                            <p class="text-xs text-slate-500 mt-1">Todos os ficheiros da pasta serão compactados num único ficheiro .ZIP automaticamente</p>
+                        </div>
+                        <input type="file" id="folderInput" webkitdirectory directory multiple onchange="handleFolderSelected(event)" class="hidden">
+                    </div>
+
+                    <!-- Selected Folder Summary -->
+                    <div id="folderInfo" class="hidden p-4 bg-slate-950 border border-amber-500/30 rounded-2xl space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 overflow-hidden">
+                                <div class="bg-amber-500/10 text-amber-400 p-3 rounded-xl border border-amber-500/20">
+                                    <i class="fa-solid fa-box-archive text-lg"></i>
+                                </div>
+                                <div>
+                                    <p id="folderNameText" class="text-sm font-semibold text-slate-200"></p>
+                                    <p id="folderStatsText" class="text-xs text-slate-400 font-mono"></p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="clearFolder()" class="text-slate-400 hover:text-rose-400 p-2 text-sm transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+
+                        <!-- ZIP Output Name Input -->
+                        <div class="pt-2 border-t border-slate-800/80">
+                            <label for="zipOutputName" class="block text-xs font-medium text-slate-400 mb-1">
+                                Nome do arquivo ZIP gerado:
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-amber-400">
+                                    <i class="fa-solid fa-file-zipper text-xs"></i>
+                                </span>
+                                <input type="text" id="zipOutputName" placeholder="minha_pasta.zip" 
+                                    class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            </div>
+                        </div>
+
+                        <!-- File List Preview Toggle -->
+                        <div class="pt-1">
+                            <details class="text-xs text-slate-400">
+                                <summary class="cursor-pointer hover:text-slate-200 select-none font-medium flex items-center gap-1">
+                                    <i class="fa-solid fa-list-ul"></i> Ver lista de ficheiros na pasta
+                                </summary>
+                                <div id="folderFilesList" class="mt-2 max-h-36 overflow-y-auto custom-scrollbar p-2 bg-slate-900/80 rounded-xl font-mono text-[11px] text-slate-300 space-y-1 border border-slate-800">
+                                </div>
+                            </details>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Action Buttons Grid -->
@@ -159,7 +282,7 @@
                     <button type="submit" id="cloudSubmitBtn" 
                         class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-indigo-600/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
-                        <span>Gerar Link & Direct Download</span>
+                        <span id="submitBtnText">Gerar Link & Direct Download</span>
                     </button>
 
                     <button type="button" onclick="triggerLocalDownload()" 
@@ -178,7 +301,7 @@
                             <i class="fa-solid fa-circle-check text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="text-sm font-semibold text-emerald-400">Ficheiro Gerado com Sucesso!</h3>
+                            <h3 class="text-sm font-semibold text-emerald-400">Link Gerado com Sucesso!</h3>
                             <p id="providerStatus" class="text-xs text-slate-400">Servidor de hospedagem: tmpfiles.org (CORS Direct)</p>
                         </div>
                     </div>
@@ -219,14 +342,18 @@
             </div>
 
             <!-- Loading Overlay -->
-            <div id="loadingOverlay" class="hidden absolute inset-0 bg-slate-900/90 backdrop-blur-sm z-20 flex flex-col items-center justify-center space-y-4 p-6">
+            <div id="loadingOverlay" class="hidden absolute inset-0 bg-slate-900/95 backdrop-blur-sm z-20 flex flex-col items-center justify-center space-y-4 p-6">
                 <div class="relative flex items-center justify-center">
-                    <div class="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-                    <i class="fa-solid fa-cloud-arrow-up text-indigo-400 absolute text-sm"></i>
+                    <div class="w-14 h-14 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
+                    <i id="loadingIcon" class="fa-solid fa-cloud-arrow-up text-indigo-400 absolute text-sm"></i>
                 </div>
                 <div class="text-center space-y-1">
-                    <p id="loadingTitle" class="text-sm font-semibold text-slate-200">Enviando arquivo...</p>
+                    <p id="loadingTitle" class="text-sm font-semibold text-slate-200">Enviando ficheiro...</p>
                     <p id="loadingSubtext" class="text-xs text-slate-400 font-mono">Processando API tmpfiles.org com suporte CORS</p>
+                </div>
+                <!-- Progress Bar -->
+                <div id="progressBarContainer" class="w-64 bg-slate-950 border border-slate-800 h-2 rounded-full overflow-hidden hidden">
+                    <div id="progressBarFill" class="bg-indigo-500 h-full w-0 transition-all duration-150"></div>
                 </div>
             </div>
         </div>
@@ -241,7 +368,7 @@
             </div>
             
             <p class="text-xs md:text-sm text-slate-400 leading-relaxed">
-                Esta aplicação funciona inteiramente no lado do cliente (Client-Side). Para hospedá-la gratuitamente no GitHub Pages:
+                Esta aplicação funciona inteiramente no lado do cliente (Client-Side) com suporte completo a JSZip e APIs CORS. Para hospedá-la gratuitamente no GitHub Pages:
             </p>
 
             <ol class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
@@ -279,31 +406,93 @@
 
     <!-- Footer -->
     <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-900">
-        FileForge Cloud Direct &bull; Suporte nativo a CORS, TmpFiles API e Fallback Local.
+        FileForge Cloud Direct &bull; Suporte a CORS, JSZip em tempo real, TmpFiles API e Fallback Local.
     </footer>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
+        // Tab State
+        let currentTab = 'text'; // 'text', 'file', 'folder'
+        let selectedSingleFile = null;
+        let selectedFolderFiles = [];
+
         // DOM Elements
         const fileNameInput = document.getElementById('fileName');
         const fileContentInput = document.getElementById('fileContent');
         const charCount = document.getElementById('charCount');
+        
+        const singleFileInput = document.getElementById('singleFileInput');
+        const singleFileInfo = document.getElementById('singleFileInfo');
+        const singleFileNameText = document.getElementById('singleFileNameText');
+        const singleFileSizeText = document.getElementById('singleFileSizeText');
+        const singleFileDropzone = document.getElementById('singleFileDropzone');
+
+        const folderInput = document.getElementById('folderInput');
+        const folderInfo = document.getElementById('folderInfo');
+        const folderNameText = document.getElementById('folderNameText');
+        const folderStatsText = document.getElementById('folderStatsText');
+        const zipOutputName = document.getElementById('zipOutputName');
+        const folderFilesList = document.getElementById('folderFilesList');
+        const folderDropzone = document.getElementById('folderDropzone');
+
         const cloudSubmitBtn = document.getElementById('cloudSubmitBtn');
+        const submitBtnText = document.getElementById('submitBtnText');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const loadingTitle = document.getElementById('loadingTitle');
         const loadingSubtext = document.getElementById('loadingSubtext');
+        const loadingIcon = document.getElementById('loadingIcon');
+        const progressBarContainer = document.getElementById('progressBarContainer');
+        const progressBarFill = document.getElementById('progressBarFill');
+
         const resultPanel = document.getElementById('resultPanel');
         const providerStatus = document.getElementById('providerStatus');
         const directUrlOutput = document.getElementById('directUrlOutput');
         const testDownloadLink = document.getElementById('testDownloadLink');
         const copyBtn = document.getElementById('copyBtn');
 
-        // Toast Elements
         const toastNotification = document.getElementById('toastNotification');
         const toastIcon = document.getElementById('toastIcon');
         const toastTitle = document.getElementById('toastTitle');
         const toastMessage = document.getElementById('toastMessage');
 
-        // Helper to update live character and line count
+        // Tab Switching Function
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Buttons UI Update
+            const tabButtons = {
+                text: document.getElementById('tabBtnText'),
+                file: document.getElementById('tabBtnFile'),
+                folder: document.getElementById('tabBtnFolder')
+            };
+
+            const tabContents = {
+                text: document.getElementById('tabContentText'),
+                file: document.getElementById('tabContentFile'),
+                folder: document.getElementById('tabContentFolder')
+            };
+
+            Object.keys(tabButtons).forEach(key => {
+                if (key === tabName) {
+                    tabButtons[key].className = "tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
+                    tabContents[key].classList.remove('hidden');
+                } else {
+                    tabButtons[key].className = "tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold flex items-center gap-2 transition shrink-0 bg-slate-800 hover:bg-slate-700 text-slate-300";
+                    tabContents[key].classList.add('hidden');
+                }
+            });
+
+            // Adjust submit button label based on tab
+            if (tabName === 'text') {
+                submitBtnText.textContent = "Gerar Link & Direct Download";
+            } else if (tabName === 'file') {
+                submitBtnText.textContent = "Upload de Ficheiro & Gerar Link";
+            } else if (tabName === 'folder') {
+                submitBtnText.textContent = "Compactar Pasta (ZIP) & Gerar Link";
+            }
+        }
+
+        // Live Character & Line Count
         function updateCharCount() {
             const text = fileContentInput.value;
             const chars = text.length;
@@ -311,13 +500,12 @@
             charCount.textContent = `${chars.toLocaleString()} caracteres | ${lines.toLocaleString()} linhas`;
         }
 
-        // Helper to quickly append extension if missing
+        // Preset Extension Helper
         function setExtension(ext) {
             let current = fileNameInput.value.trim();
             if (!current) {
                 fileNameInput.value = 'ficheiro' + ext;
             } else {
-                // Strip existing extension if present
                 const lastDot = current.lastIndexOf('.');
                 if (lastDot > 0) {
                     current = current.substring(0, lastDot);
@@ -327,46 +515,217 @@
             fileNameInput.focus();
         }
 
-        // Form Submission handler (Cloud Link Generation)
+        // Format Byte Sizes
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Single File Selection Handling
+        function handleSingleFileSelected(event) {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                selectedSingleFile = files[0];
+                singleFileNameText.textContent = selectedSingleFile.name;
+                singleFileSizeText.textContent = formatBytes(selectedSingleFile.size);
+                
+                singleFileDropzone.classList.add('hidden');
+                singleFileInfo.classList.remove('hidden');
+            }
+        }
+
+        function clearSingleFile() {
+            selectedSingleFile = null;
+            singleFileInput.value = '';
+            singleFileDropzone.classList.remove('hidden');
+            singleFileInfo.classList.add('hidden');
+        }
+
+        // Drag and Drop for Single File
+        ['dragenter', 'dragover'].forEach(eventName => {
+            singleFileDropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                singleFileDropzone.classList.add('dropzone-active');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            singleFileDropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                singleFileDropzone.classList.remove('dropzone-active');
+            }, false);
+        });
+
+        singleFileDropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files && files.length > 0) {
+                singleFileInput.files = files;
+                handleSingleFileSelected({ target: { files: files } });
+            }
+        });
+
+        // Folder Selection Handling
+        function handleFolderSelected(event) {
+            const files = Array.from(event.target.files);
+            if (!files || files.length === 0) return;
+
+            selectedFolderFiles = files;
+            
+            // Extract root folder name from relative path
+            const firstRelativePath = files[0].webkitRelativePath || '';
+            const rootFolderName = firstRelativePath.split('/')[0] || 'pasta_compactada';
+            
+            folderNameText.textContent = `Pasta: ${rootFolderName}`;
+            
+            let totalBytes = files.reduce((acc, f) => acc + f.size, 0);
+            folderStatsText.textContent = `${files.length} ficheiro(s) | Total: ${formatBytes(totalBytes)}`;
+            
+            // Default ZIP filename
+            zipOutputName.value = `${rootFolderName}.zip`;
+
+            // Render files list preview
+            folderFilesList.innerHTML = '';
+            files.slice(0, 50).forEach(file => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center justify-between text-slate-400 py-0.5 border-b border-slate-800/50 last:border-none';
+                item.innerHTML = `
+                    <span class="truncate max-w-[280px]" title="${file.webkitRelativePath || file.name}">
+                        <i class="fa-regular fa-file text-[10px] mr-1 text-slate-500"></i>${file.webkitRelativePath || file.name}
+                    </span>
+                    <span class="shrink-0 text-[10px] text-slate-500 font-mono">${formatBytes(file.size)}</span>
+                `;
+                folderFilesList.appendChild(item);
+            });
+
+            if (files.length > 50) {
+                const moreItem = document.createElement('div');
+                moreItem.className = 'text-center text-[10px] text-amber-400/80 pt-1 font-semibold';
+                moreItem.textContent = `+ ${files.length - 50} ficheiro(s) adicional(is)...`;
+                folderFilesList.appendChild(moreItem);
+            }
+
+            folderDropzone.classList.add('hidden');
+            folderInfo.classList.remove('hidden');
+        }
+
+        function clearFolder() {
+            selectedFolderFiles = [];
+            folderInput.value = '';
+            folderDropzone.classList.remove('hidden');
+            folderInfo.classList.add('hidden');
+        }
+
+        // Client-side ZIP Generation using JSZip
+        async function buildZipFromFolder(files, outputName, progressCallback) {
+            const zip = new JSZip();
+            
+            files.forEach(file => {
+                const path = file.webkitRelativePath || file.name;
+                zip.file(path, file);
+            });
+
+            const zipBlob = await zip.generateAsync({
+                type: 'blob',
+                compression: 'DEFLATE',
+                compressionOptions: { level: 6 }
+            }, function updateCallback(metadata) {
+                if (progressCallback) {
+                    progressCallback(metadata.percent);
+                }
+            });
+
+            const finalFileName = outputName.endsWith('.zip') ? outputName : `${outputName}.zip`;
+            return new File([zipBlob], finalFileName, { type: 'application/zip' });
+        }
+
+        // Form Submit Handler
         async function handleFormSubmit(event) {
             event.preventDefault();
 
-            const filename = fileNameInput.value.trim();
-            const content = fileContentInput.value;
+            let fileToSend = null;
 
-            if (!filename || !content) {
-                showToast('error', 'Campos Incompletos', 'Por favor preencha o nome e o conteúdo do arquivo.');
-                return;
+            // Determine active tab payload
+            if (currentTab === 'text') {
+                const filename = fileNameInput.value.trim();
+                const content = fileContentInput.value;
+
+                if (!filename || !content) {
+                    showToast('error', 'Campos Incompletos', 'Por favor preencha o nome e o conteúdo do ficheiro.');
+                    return;
+                }
+                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                fileToSend = new File([blob], filename, { type: 'text/plain;charset=utf-8' });
+
+            } else if (currentTab === 'file') {
+                if (!selectedSingleFile) {
+                    showToast('error', 'Nenhum Ficheiro Selecionado', 'Por favor selecione um ficheiro do seu computador.');
+                    return;
+                }
+                fileToSend = selectedSingleFile;
+
+            } else if (currentTab === 'folder') {
+                if (!selectedFolderFiles || selectedFolderFiles.length === 0) {
+                    showToast('error', 'Nenhuma Pasta Selecionada', 'Por favor selecione uma pasta do seu computador.');
+                    return;
+                }
+                
+                const customZipName = zipOutputName.value.trim() || 'pasta_compactada.zip';
+
+                // Show ZIP creation overlay
+                hideToast();
+                resultPanel.classList.add('hidden');
+                loadingOverlay.classList.remove('hidden');
+                loadingIcon.className = "fa-solid fa-file-zipper text-amber-400 absolute text-sm";
+                loadingTitle.textContent = "Compactando pasta em arquivo ZIP...";
+                loadingSubtext.textContent = `A processar ${selectedFolderFiles.length} ficheiros no navegador`;
+                progressBarContainer.classList.remove('hidden');
+                progressBarFill.style.width = '0%';
+
+                try {
+                    fileToSend = await buildZipFromFolder(selectedFolderFiles, customZipName, (percent) => {
+                        const p = Math.round(percent);
+                        progressBarFill.style.width = `${p}%`;
+                        loadingSubtext.textContent = `Compressão ZIP: ${p}% concluído (${selectedFolderFiles.length} ficheiros)`;
+                    });
+                } catch (zipErr) {
+                    console.error('Erro na compressão ZIP:', zipErr);
+                    loadingOverlay.classList.add('hidden');
+                    showToast('error', 'Erro ao Criar ZIP', 'Não foi possível compactar os ficheiros da pasta.');
+                    return;
+                }
             }
 
+            // Cloud Upload Step
             hideToast();
             resultPanel.classList.add('hidden');
             loadingOverlay.classList.remove('hidden');
+            progressBarContainer.classList.add('hidden');
+            loadingIcon.className = "fa-solid fa-cloud-arrow-up text-indigo-400 absolute text-sm";
+            loadingTitle.textContent = "Hospedando na API tmpfiles.org...";
+            loadingSubtext.textContent = "A converter rota para link direto /dl/";
 
-            // Step 1: Prepare File Blob
-            const fileBlob = new Blob([content], { type: 'application/octet-stream' });
-            
             let uploadResult = null;
 
             // Attempt Primary API: tmpfiles.org
             try {
-                loadingTitle.textContent = "Hospedando na API tmpfiles.org...";
-                loadingSubtext.textContent = "Convertendo rota para link direto /dl/";
-
-                uploadResult = await uploadToTmpFiles(fileBlob, filename);
+                uploadResult = await uploadToTmpFiles(fileToSend, fileToSend.name);
             } catch (err1) {
                 console.warn('tmpfiles.org falhou, tentando fallback file.io:', err1);
                 
                 // Attempt Secondary API: file.io
                 try {
-                    loadingTitle.textContent = "Tentando servidor alternativo (file.io)...";
-                    loadingSubtext.textContent = "Processando fallback de conexão";
-                    uploadResult = await uploadToFileIo(fileBlob, filename);
+                    loadingTitle.textContent = "A tentar servidor alternativo (file.io)...";
+                    loadingSubtext.textContent = "A processar fallback de conexão";
+                    uploadResult = await uploadToFileIo(fileToSend, fileToSend.name);
                 } catch (err2) {
                     console.warn('file.io falhou, gerando Blob Local:', err2);
                     
                     // Fallback to Local Blob
-                    uploadResult = createLocalBlobResult(fileBlob, filename);
+                    uploadResult = createLocalBlobResult(fileToSend, fileToSend.name);
                 }
             } finally {
                 loadingOverlay.classList.add('hidden');
@@ -379,7 +738,7 @@
                 providerStatus.textContent = `Provedor: ${uploadResult.provider}`;
 
                 if (uploadResult.isLocal) {
-                    showToast('warning', 'Modo Offline Ativado', 'Não foi possível conectar às APIs na nuvem devido a bloqueios na rede. O arquivo está pronto para download local!');
+                    showToast('warning', 'Modo Offline Ativado', 'Não foi possível conectar às APIs na nuvem. O arquivo está disponível para download local!');
                 } else {
                     showToast('success', 'Link Direto Gerado!', 'Seu link foi criado com sucesso com suporte a CORS e download direto.');
                 }
@@ -458,31 +817,72 @@
             };
         }
 
-        // Instant Direct Local Download
-        function triggerLocalDownload() {
-            const filename = fileNameInput.value.trim() || 'ficheiro.txt';
-            const content = fileContentInput.value;
+        // Offline / Direct Local Download Trigger
+        async function triggerLocalDownload() {
+            let fileToSave = null;
 
-            if (!content) {
-                showToast('error', 'Conteúdo Vazio', 'Digite algum conteúdo antes de realizar o download.');
-                return;
+            if (currentTab === 'text') {
+                const filename = fileNameInput.value.trim() || 'ficheiro.txt';
+                const content = fileContentInput.value;
+
+                if (!content) {
+                    showToast('error', 'Conteúdo Vazio', 'Digite algum conteúdo antes de realizar o download.');
+                    return;
+                }
+                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                fileToSave = new File([blob], filename, { type: 'text/plain;charset=utf-8' });
+
+            } else if (currentTab === 'file') {
+                if (!selectedSingleFile) {
+                    showToast('error', 'Nenhum Ficheiro', 'Escolha um ficheiro primeiro para baixar localmente.');
+                    return;
+                }
+                fileToSave = selectedSingleFile;
+
+            } else if (currentTab === 'folder') {
+                if (!selectedFolderFiles || selectedFolderFiles.length === 0) {
+                    showToast('error', 'Nenhuma Pasta', 'Escolha uma pasta primeiro para gerar o ZIP local.');
+                    return;
+                }
+
+                const customZipName = zipOutputName.value.trim() || 'pasta_compactada.zip';
+
+                hideToast();
+                loadingOverlay.classList.remove('hidden');
+                loadingIcon.className = "fa-solid fa-file-zipper text-amber-400 absolute text-sm";
+                loadingTitle.textContent = "A gerar ZIP local...";
+                progressBarContainer.classList.remove('hidden');
+
+                try {
+                    fileToSave = await buildZipFromFolder(selectedFolderFiles, customZipName, (percent) => {
+                        const p = Math.round(percent);
+                        progressBarFill.style.width = `${p}%`;
+                        loadingSubtext.textContent = `Compressão: ${p}%`;
+                    });
+                } catch (e) {
+                    loadingOverlay.classList.add('hidden');
+                    showToast('error', 'Erro ZIP', 'Não foi possível gerar o ZIP localmente.');
+                    return;
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
             }
 
-            const blob = new Blob([content], { type: 'application/octet-stream' });
-            const tempUrl = URL.createObjectURL(blob);
-            
+            if (!fileToSave) return;
+
+            const tempUrl = URL.createObjectURL(fileToSave);
             const link = document.createElement('a');
             link.href = tempUrl;
-            link.download = filename;
+            link.download = fileToSave.name;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             setTimeout(() => URL.revokeObjectURL(tempUrl), 5000);
-            showToast('success', 'Download Iniciado', `O arquivo "${filename}" foi baixado diretamente no seu dispositivo.`);
+            showToast('success', 'Download Iniciado', `O ficheiro "${fileToSave.name}" foi salvo diretamente no seu dispositivo.`);
         }
 
-        // Clipboard Copy with iframe fallback
+        // Clipboard Copy
         function copyGeneratedLink() {
             const urlToCopy = directUrlOutput.value;
             if (!urlToCopy) return;
@@ -491,7 +891,6 @@
             directUrlOutput.setSelectionRange(0, 99999);
 
             try {
-                // Standard execCommand for maximal iframe compatibility
                 document.execCommand('copy');
                 
                 const originalHTML = copyBtn.innerHTML;
@@ -510,7 +909,7 @@
             }
         }
 
-        // Custom Notification Toast Display
+        // Notification Toast Display
         function showToast(type, title, message) {
             toastNotification.classList.remove('hidden', 'bg-emerald-950/80', 'border-emerald-500/40', 'bg-rose-950/80', 'border-rose-500/40', 'bg-amber-950/80', 'border-amber-500/40');
 
