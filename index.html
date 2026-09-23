@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FileForge Direct - Gerador de Arquivos & Cloud Direct Link</title>
+    <title>Vortex Links</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -75,17 +75,18 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="text-base md:text-lg font-bold tracking-tight text-white">FileForge Direct</h1>
-                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">ZIP & CORS Ready</span>
+                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Direct Links</span>
                     </div>
-                    <p class="text-xs text-slate-400 hidden sm:block">Gerador de Links Diretos para Textos, Ficheiros e Pastas (ZIP Auto)</p>
+                    <p class="text-xs text-slate-400 hidden sm:block">Gerador de Links Diretos sem Encurtadores ou Propagandas</p>
                 </div>
             </div>
             
             <div class="flex items-center gap-3">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" 
-                   class="text-slate-300 hover:text-white transition text-xs md:text-sm flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3.5 py-2 rounded-xl border border-slate-700 shadow-sm">
-                    <i class="fa-brands fa-github text-base"></i>
-                    <span class="hidden md:inline font-medium">GitHub Pages Ready</span>
+                <!-- WhatsApp Channel Button -->
+                <a href="https://whatsapp.com/channel/0029VbC7FWcJENxsIOsndS15" target="_blank" rel="noopener noreferrer" 
+                   class="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white transition text-xs md:text-sm font-semibold flex items-center gap-2 px-4 py-2.5 rounded-xl shadow-lg shadow-emerald-600/20">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Entrar no Canal</span>
                 </a>
             </div>
         </div>
@@ -116,7 +117,7 @@
                     <span>Criar Link / Hospedar Conteúdo</span>
                 </h2>
                 <p class="text-slate-400 text-xs md:text-sm leading-relaxed">
-                    Escolha a origem do ficheiro: digite o conteúdo manualmente, escolha um ficheiro do PC ou envie uma pasta completa (o sistema criará um <code class="text-indigo-300 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">.zip</code> automaticamente).
+                    Escolha como deseja enviar seu arquivo: escreva/cole texto ou código, selecione um ficheiro do PC ou envie uma pasta inteira (compactada em <code class="text-indigo-300 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">.zip</code> automaticamente).
                 </p>
             </div>
 
@@ -183,7 +184,7 @@
                 <!-- SECTION 2: FILE UPLOAD FROM PC -->
                 <div id="tabContentFile" class="tab-content hidden space-y-4">
                     <label class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-file-arrow-up text-indigo-400"></i> Selecionar Ficheiro do Computador
+                        <i class="fa-solid fa-file-arrow-up text-indigo-400"></i> Selecionar Ficheiro do Computador / Celular
                     </label>
 
                     <div id="singleFileDropzone" onclick="document.getElementById('singleFileInput').click()" 
@@ -306,14 +307,14 @@
                         </div>
                     </div>
                     <span id="expirationBadge" class="bg-slate-800 text-slate-300 border border-slate-700 text-[10px] px-2.5 py-1 rounded-full font-mono">
-                        Auto-expira em 1 hora
+                        Download Direto Ativo
                     </span>
                 </div>
 
                 <!-- Generated Direct URL Input -->
                 <div class="space-y-2">
                     <label class="block text-xs font-medium text-slate-400">
-                        Link de Download Direto (Força Download no Navegador):
+                        Link de Download Direto (Força Download sem encurtadores):
                     </label>
                     <div class="flex flex-col sm:flex-row items-stretch gap-2">
                         <input type="text" id="directUrlOutput" readonly 
@@ -349,7 +350,7 @@
                 </div>
                 <div class="text-center space-y-1">
                     <p id="loadingTitle" class="text-sm font-semibold text-slate-200">Enviando ficheiro...</p>
-                    <p id="loadingSubtext" class="text-xs text-slate-400 font-mono">Processando API tmpfiles.org com suporte CORS</p>
+                    <p id="loadingSubtext" class="text-xs text-slate-400 font-mono">Processando servidor com suporte CORS</p>
                 </div>
                 <!-- Progress Bar -->
                 <div id="progressBarContainer" class="w-64 bg-slate-950 border border-slate-800 h-2 rounded-full overflow-hidden hidden">
@@ -358,49 +359,78 @@
             </div>
         </div>
 
-        <!-- GitHub Pages Guide Card -->
-        <div class="mt-8 bg-slate-900/70 border border-slate-800/80 rounded-3xl p-6 md:p-8 text-sm text-slate-400 space-y-4">
-            <div class="flex items-center gap-3">
-                <div class="bg-indigo-500/10 text-indigo-400 p-2 rounded-lg">
-                    <i class="fa-brands fa-github text-lg"></i>
+        <!-- Summary & Features Explanatory Card -->
+        <div class="mt-8 bg-slate-900/80 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                <div class="bg-gradient-to-tr from-indigo-500 to-emerald-400 p-2.5 rounded-2xl text-slate-950 font-bold">
+                    <i class="fa-solid fa-circle-info text-lg"></i>
                 </div>
-                <h3 class="font-bold text-slate-200 text-base">Como publicar no GitHub Pages?</h3>
+                <div>
+                    <h3 class="font-bold text-slate-100 text-base md:text-lg">Para que este site serve e o que ele faz?</h3>
+                    <p class="text-xs text-slate-400">Uma ferramenta completa para geração, conversão e hospedagem de arquivos sem burocracia.</p>
+                </div>
             </div>
-            
-            <p class="text-xs md:text-sm text-slate-400 leading-relaxed">
-                Esta aplicação funciona inteiramente no lado do cliente (Client-Side) com suporte completo a JSZip e APIs CORS. Para hospedá-la gratuitamente no GitHub Pages:
+
+            <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                O <strong class="text-white">FileForge Direct</strong> foi desenvolvido para solucionar a dificuldade de compartilhar arquivos e scripts rapidamente na internet. Ele permite criar, converter e hospedar arquivos com <strong class="text-emerald-400">links de download direto</strong>, sem protetores de link, sem anúncios irritantes e sem telas de espera.
             </p>
 
-            <ol class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
-                <li class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex gap-3">
-                    <span class="bg-indigo-600/20 text-indigo-400 font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0">1</span>
-                    <div>
-                        <strong class="text-slate-200">Crie o Repositório:</strong>
-                        <p class="text-slate-400 mt-0.5">Crie um repositório público no GitHub (ex: <code class="text-indigo-300">gerador-ficheiros</code>).</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <!-- Feature 1 -->
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1">
+                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm mb-1">
+                        <i class="fa-solid fa-code"></i>
+                        <span>1. Criar Arquivo por Texto ou Código</span>
                     </div>
-                </li>
-                <li class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex gap-3">
-                    <span class="bg-indigo-600/20 text-indigo-400 font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0">2</span>
-                    <div>
-                        <strong class="text-slate-200">Salve como index.html:</strong>
-                        <p class="text-slate-400 mt-0.5">Salve todo o código deste ficheiro com o nome exato <code class="text-indigo-300">index.html</code>.</p>
+                    <p class="text-slate-400 leading-relaxed">
+                        Digite ou cole qualquer código (Lua, JSON, Python, HTML, TXT, etc.), defina o nome com a extensão desejada e o site compila o arquivo pronto instantaneamente.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1">
+                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm mb-1">
+                        <i class="fa-solid fa-file-arrow-up"></i>
+                        <span>2. Enviar Arquivo do Dispositivo</span>
                     </div>
-                </li>
-                <li class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex gap-3">
-                    <span class="bg-indigo-600/20 text-indigo-400 font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0">3</span>
-                    <div>
-                        <strong class="text-slate-200">Upload no GitHub:</strong>
-                        <p class="text-slate-400 mt-0.5">Envie o <code class="text-indigo-300">index.html</code> para a branch principal (<code class="text-indigo-300">main</code>).</p>
+                    <p class="text-slate-400 leading-relaxed">
+                        Envie qualquer ficheiro local do seu computador ou celular (.exe, .pdf, .png, .zip, etc.) para obter um link na nuvem de acesso rápido.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1">
+                    <div class="flex items-center gap-2 text-amber-400 font-semibold text-sm mb-1">
+                        <i class="fa-solid fa-folder-plus"></i>
+                        <span>3. Enviar Pasta Inteira (Auto-ZIP)</span>
                     </div>
-                </li>
-                <li class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex gap-3">
-                    <span class="bg-indigo-600/20 text-indigo-400 font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0">4</span>
-                    <div>
-                        <strong class="text-slate-200">Ative o Pages:</strong>
-                        <p class="text-slate-400 mt-0.5">Em <code class="text-indigo-300">Settings &gt; Pages</code>, escolha a branch <code class="text-indigo-300">main</code> e salve!</p>
+                    <p class="text-slate-400 leading-relaxed">
+                        Selecione uma pasta inteira no seu PC. O próprio navegador compacta automaticamente todos os ficheiros num único arquivo <code class="text-amber-300">.ZIP</code> pronto para envio ou download.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1">
+                    <div class="flex items-center gap-2 text-emerald-400 font-semibold text-sm mb-1">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>4. Link Direto e Sem Encurtador</span>
                     </div>
-                </li>
-            </ol>
+                    <p class="text-slate-400 leading-relaxed">
+                        O link gerado força o download direto do arquivo quando acessado. Ideal para usar em scripts, automações, jogos ou compartilhamento limpo sem propaganda.
+                    </p>
+                </div>
+
+                <!-- Feature 5 (Full width) -->
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-1 md:col-span-2">
+                    <div class="flex items-center gap-2 text-emerald-400 font-semibold text-sm mb-1">
+                        <i class="fa-solid fa-hard-drive"></i>
+                        <span>5. Download Local Instantâneo (Offline)</span>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed">
+                        Você também pode usar a ferramenta de forma 100% offline para salvar arquivos e pastas compactadas diretamente no seu próprio dispositivo sem depender da internet.
+                    </p>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -459,7 +489,6 @@
         function switchTab(tabName) {
             currentTab = tabName;
             
-            // Buttons UI Update
             const tabButtons = {
                 text: document.getElementById('tabBtnText'),
                 file: document.getElementById('tabBtnFile'),
@@ -482,7 +511,6 @@
                 }
             });
 
-            // Adjust submit button label based on tab
             if (tabName === 'text') {
                 submitBtnText.textContent = "Gerar Link & Direct Download";
             } else if (tabName === 'file') {
@@ -575,7 +603,6 @@
 
             selectedFolderFiles = files;
             
-            // Extract root folder name from relative path
             const firstRelativePath = files[0].webkitRelativePath || '';
             const rootFolderName = firstRelativePath.split('/')[0] || 'pasta_compactada';
             
@@ -584,10 +611,8 @@
             let totalBytes = files.reduce((acc, f) => acc + f.size, 0);
             folderStatsText.textContent = `${files.length} ficheiro(s) | Total: ${formatBytes(totalBytes)}`;
             
-            // Default ZIP filename
             zipOutputName.value = `${rootFolderName}.zip`;
 
-            // Render files list preview
             folderFilesList.innerHTML = '';
             files.slice(0, 50).forEach(file => {
                 const item = document.createElement('div');
@@ -648,7 +673,6 @@
 
             let fileToSend = null;
 
-            // Determine active tab payload
             if (currentTab === 'text') {
                 const filename = fileNameInput.value.trim();
                 const content = fileContentInput.value;
@@ -675,7 +699,6 @@
                 
                 const customZipName = zipOutputName.value.trim() || 'pasta_compactada.zip';
 
-                // Show ZIP creation overlay
                 hideToast();
                 resultPanel.classList.add('hidden');
                 loadingOverlay.classList.remove('hidden');
@@ -705,33 +728,27 @@
             loadingOverlay.classList.remove('hidden');
             progressBarContainer.classList.add('hidden');
             loadingIcon.className = "fa-solid fa-cloud-arrow-up text-indigo-400 absolute text-sm";
-            loadingTitle.textContent = "Hospedando na API tmpfiles.org...";
-            loadingSubtext.textContent = "A converter rota para link direto /dl/";
+            loadingTitle.textContent = "Hospedando na nuvem...";
+            loadingSubtext.textContent = "A converter rota para link direto";
 
             let uploadResult = null;
 
-            // Attempt Primary API: tmpfiles.org
             try {
                 uploadResult = await uploadToTmpFiles(fileToSend, fileToSend.name);
             } catch (err1) {
                 console.warn('tmpfiles.org falhou, tentando fallback file.io:', err1);
-                
-                // Attempt Secondary API: file.io
                 try {
                     loadingTitle.textContent = "A tentar servidor alternativo (file.io)...";
                     loadingSubtext.textContent = "A processar fallback de conexão";
                     uploadResult = await uploadToFileIo(fileToSend, fileToSend.name);
                 } catch (err2) {
                     console.warn('file.io falhou, gerando Blob Local:', err2);
-                    
-                    // Fallback to Local Blob
                     uploadResult = createLocalBlobResult(fileToSend, fileToSend.name);
                 }
             } finally {
                 loadingOverlay.classList.add('hidden');
             }
 
-            // Display Results
             if (uploadResult) {
                 directUrlOutput.value = uploadResult.url;
                 testDownloadLink.href = uploadResult.url;
@@ -765,8 +782,6 @@
             const json = await response.json();
             
             if (json.status === 'success' && json.data && json.data.url) {
-                // Convert default URL https://tmpfiles.org/12345/filename.txt 
-                // to Direct Download URL https://tmpfiles.org/dl/12345/filename.txt
                 const rawUrl = json.data.url;
                 const directUrl = rawUrl.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
                 
